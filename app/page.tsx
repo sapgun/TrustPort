@@ -1,22 +1,9 @@
 "use client"
 
 import { useState } from "react"
-
 import { useEffect, useRef } from "react"
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
-import {
-  ArrowRight,
-  Shield,
-  Wallet,
-  Globe,
-  Users,
-  Mail,
-  Github,
-  Twitter,
-  Download,
-  Play,
-  ChevronDown,
-} from "lucide-react"
+import { ArrowRight, Shield, Wallet, Globe, Users, Mail, Download, Play, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -24,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { InteractiveBackground } from "@/components/interactive-background"
 import { ScrollBasedAnimation, ParallaxSection } from "@/components/scroll-based-animation"
 import { EnhancedThreeScene } from "@/components/enhanced-three-scene"
+import { Footer } from "@/components/footer" // Declare the Footer variable before using it
 
 export default function TrustPortLanding() {
   const { scrollYProgress } = useScroll()
@@ -116,16 +104,21 @@ function HeroSection({ isMobile }: { isMobile: boolean }) {
 
   return (
     <section ref={ref} className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* 텍스트 뒤 애니메이션 배경 */}
+      <div className="absolute inset-0 z-0">
+        <HeroBackgroundAnimation />
+      </div>
+
       <motion.div style={{ y, opacity }} className="container mx-auto px-6 text-center relative z-10">
         <motion.h1
-          className="text-6xl lg:text-8xl font-bold mb-8 leading-tight"
+          className="text-6xl lg:text-8xl font-bold mb-8 leading-tight relative"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
           Web3 실명 인증의{" "}
           <motion.span
-            className="text-[#00C2A8]"
+            className="text-[#00C2A8] relative"
             animate={{
               textShadow: [
                 "0 0 20px rgba(0, 194, 168, 0.5)",
@@ -136,11 +129,20 @@ function HeroSection({ isMobile }: { isMobile: boolean }) {
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           >
             게이트웨이
+            {/* 게이트웨이 텍스트 주변 특별 효과 */}
+            <motion.div
+              className="absolute -inset-4 border border-[#00C2A8]/30 rounded-lg"
+              animate={{
+                scale: [1, 1.05, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+            />
           </motion.span>
         </motion.h1>
 
         <motion.p
-          className="text-xl lg:text-2xl mb-12 text-gray-300 leading-relaxed max-w-4xl mx-auto"
+          className="text-xl lg:text-2xl mb-12 text-gray-300 leading-relaxed max-w-4xl mx-auto relative"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
@@ -182,6 +184,211 @@ function HeroSection({ isMobile }: { isMobile: boolean }) {
         <ChevronDown className="h-8 w-8 text-[#00C2A8]" />
       </motion.div>
     </section>
+  )
+}
+
+function HeroBackgroundAnimation() {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* 네트워크 노드들 */}
+      <div className="absolute inset-0">
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={`node-${i}`}
+            className="absolute w-3 h-3 bg-[#00C2A8]/40 rounded-full"
+            style={{
+              left: `${10 + (i % 4) * 25}%`,
+              top: `${20 + Math.floor(i / 4) * 30}%`,
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.4, 0.8, 0.4],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 연결선들 */}
+      <svg className="absolute inset-0 w-full h-full">
+        {[...Array(8)].map((_, i) => (
+          <motion.line
+            key={`line-${i}`}
+            x1={`${15 + (i % 3) * 30}%`}
+            y1={`${25 + Math.floor(i / 3) * 25}%`}
+            x2={`${35 + (i % 3) * 30}%`}
+            y2={`${35 + Math.floor(i / 3) * 25}%`}
+            stroke="#00C2A8"
+            strokeWidth="1"
+            opacity="0.3"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: [0, 1, 0] }}
+            transition={{
+              duration: 4,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.5,
+            }}
+          />
+        ))}
+      </svg>
+
+      {/* 플로팅 데이터 블록들 */}
+      <div className="absolute inset-0">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={`block-${i}`}
+            className="absolute w-8 h-8 border border-[#00C2A8]/30 bg-[#00C2A8]/10"
+            style={{
+              left: `${5 + i * 15}%`,
+              top: `${10 + (i % 2) * 60}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              rotateY: [0, 180, 360],
+              opacity: [0.3, 0.7, 0.3],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.8,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 인증 체크마크들 */}
+      <div className="absolute inset-0">
+        {[...Array(4)].map((_, i) => (
+          <motion.div
+            key={`check-${i}`}
+            className="absolute text-[#00C2A8] text-2xl"
+            style={{
+              left: `${20 + i * 20}%`,
+              top: `${15 + (i % 2) * 50}%`,
+            }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{
+              scale: [0, 1.2, 1, 0],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 1.5,
+            }}
+          >
+            ✓
+          </motion.div>
+        ))}
+      </div>
+
+      {/* 방패 아이콘들 */}
+      <div className="absolute inset-0">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={`shield-${i}`}
+            className="absolute text-[#00C2A8]/50 text-xl"
+            style={{
+              left: `${30 + i * 25}%`,
+              top: `${40 + (i % 2) * 20}%`,
+            }}
+            animate={{
+              scale: [1, 1.3, 1],
+              rotate: [0, 10, -10, 0],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 2,
+            }}
+          >
+            🛡️
+          </motion.div>
+        ))}
+      </div>
+
+      {/* 데이터 플로우 파티클들 */}
+      <div className="absolute inset-0">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className="absolute w-1 h-1 bg-[#00C2A8] rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              x: [0, Math.random() * 200 - 100],
+              y: [0, Math.random() * 200 - 100],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 원형 펄스 효과 */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={`pulse-${i}`}
+            className="absolute border border-[#00C2A8]/20 rounded-full"
+            style={{
+              width: `${200 + i * 100}px`,
+              height: `${200 + i * 100}px`,
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.2, 0.1, 0.2],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 키워드 플로팅 텍스트 */}
+      <div className="absolute inset-0">
+        {["PASS", "DID", "Web3", "Trust", "KYC", "DAO"].map((text, i) => (
+          <motion.div
+            key={`text-${i}`}
+            className="absolute text-[#00C2A8]/20 text-sm font-mono"
+            style={{
+              left: `${10 + (i % 3) * 30}%`,
+              top: `${20 + Math.floor(i / 3) * 40}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.1, 0.4, 0.1],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 1.2,
+            }}
+          >
+            {text}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* 그리드 라인 효과 */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="w-full h-full bg-[url('data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 40 40%22 xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cg fill%3D%22none%22 fillRule%3D%22evenodd%22%3E%3Cg stroke%3D%22%2300C2A8%22 strokeWidth%3D%221%22%3E%3Cpath d%3D%22M0 40L40 0M40 40L0 0%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+      </div>
+    </div>
   )
 }
 
@@ -574,89 +781,5 @@ function CTASection() {
         </div>
       </div>
     </section>
-  )
-}
-
-function Footer() {
-  return (
-    <footer className="bg-black border-t border-[#00C2A8]/20 text-white py-12">
-      <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold mb-4">
-              <span className="text-[#00C2A8]">Trust</span>Port
-            </h3>
-            <p className="text-gray-300 mb-4">Web3 실명 인증의 새로운 표준</p>
-            <div className="flex space-x-4">
-              <Button size="sm" variant="ghost" className="text-white hover:text-[#00C2A8]">
-                <Github className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" className="text-white hover:text-[#00C2A8]">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" className="text-white hover:text-[#00C2A8]">
-                <Mail className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">서비스</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  PASS 인증
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  DID 생성
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  Trust Score
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  Web3 연동
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-4">지원</h4>
-            <ul className="space-y-2 text-gray-300">
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  문서
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  API
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  고객지원
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-[#00C2A8] transition-colors">
-                  개발자
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-[#00C2A8]/20 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 TrustPort. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
   )
 }
