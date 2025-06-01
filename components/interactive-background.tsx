@@ -2,25 +2,19 @@
 
 import type React from "react"
 
-import { useRef, useEffect, useMemo, useState } from "react"
+import { useRef, useEffect, useMemo } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Points, PointMaterial, Sphere, MeshDistortMaterial, Float } from "@react-three/drei"
 import * as THREE from "three"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 function ParticleField({ mouse }: { mouse: React.MutableRefObject<[number, number]> }) {
   const ref = useRef<THREE.Points>(null)
   const { size, viewport } = useThree()
-  const isMobile = useIsMobile()
 
-  // 파티클 수를 상수로 고정 (모바일에서도 동일한 수 사용)
-  const PARTICLE_COUNT = 1000
-
-  // 파티클 위치를 한 번만 생성하고 변경하지 않음
   const particlesPosition = useMemo(() => {
-    const positions = new Float32Array(PARTICLE_COUNT * 3)
+    const positions = new Float32Array(2000 * 3)
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < 2000; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 20
       positions[i * 3 + 1] = (Math.random() - 0.5) * 20
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20
@@ -29,11 +23,6 @@ function ParticleField({ mouse }: { mouse: React.MutableRefObject<[number, numbe
     return positions
   }, [])
 
-  // 애니메이션용 별도 배열 생성
-  const originalPositions = useMemo(() => {
-    return particlesPosition.slice()
-  }, [particlesPosition])
-
   useFrame((state) => {
     if (ref.current) {
       const time = state.clock.elapsedTime
@@ -41,40 +30,29 @@ function ParticleField({ mouse }: { mouse: React.MutableRefObject<[number, numbe
       // 마우스 인터랙션
       const mouseX = (mouse.current[0] / size.width) * 2 - 1
       const mouseY = -(mouse.current[1] / size.height) * 2 + 1
-      const intensity = isMobile ? 0.05 : 0.1
 
-      ref.current.rotation.x = time * 0.05 + mouseY * intensity
-      ref.current.rotation.y = time * 0.075 + mouseX * intensity
+      ref.current.rotation.x = time * 0.05 + mouseY * 0.1
+      ref.current.rotation.y = time * 0.075 + mouseX * 0.1
 
-      // 파티클 개별 애니메이션 - 원본 배열을 수정하지 않고 임시 배열에 복사 후 수정
-      if (!isMobile) {
-        const positions = ref.current.geometry.attributes.position.array as Float32Array
+      // 파티클 개별 애니메이션
+      const positions = ref.current.geometry.attributes.position.array as Float32Array
 
-        for (let i = 0; i < positions.length; i += 3) {
-          const originalY = originalPositions[i + 1]
-          const originalZ = originalPositions[i + 2]
-          const x = positions[i]
+      for (let i = 0; i < positions.length; i += 3) {
+        const x = positions[i]
+        const y = positions[i + 1]
+        const z = positions[i + 2]
 
-          // 원본 위치를 기준으로 애니메이션 적용
-          positions[i + 1] = originalY + Math.sin(time + x * 0.01) * 0.05
-          positions[i + 2] = originalZ + Math.cos(time + originalY * 0.01) * 0.05
-        }
-
-        ref.current.geometry.attributes.position.needsUpdate = true
+        positions[i + 1] = y + Math.sin(time + x * 0.01) * 0.01
+        positions[i + 2] = z + Math.cos(time + y * 0.01) * 0.01
       }
+
+      ref.current.geometry.attributes.position.needsUpdate = true
     }
   })
 
   return (
     <Points ref={ref} positions={particlesPosition} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#00C2A8"
-        size={isMobile ? 0.08 : 0.05}
-        sizeAttenuation={true}
-        depthWrite={false}
-        opacity={isMobile ? 0.4 : 0.6}
-      />
+      <PointMaterial transparent color="#00C2A8" size={0.05} sizeAttenuation={true} depthWrite={false} opacity={0.6} />
     </Points>
   )
 }
@@ -234,51 +212,27 @@ function ConnectionLines({ scrollProgress }: { scrollProgress: number }) {
 
 export function InteractiveBackground({ scrollProgress }: { scrollProgress: number }) {
   const mouse = useRef<[number, number]>([0, 0])
-  const isMobile = useIsMobile()
-  // 클라이언트 사이드 렌더링을 위한 상태
-  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsClient(true)
-
     const handleMouseMove = (event: MouseEvent) => {
       mouse.current = [event.clientX, event.clientY]
     }
 
-    const handleTouchMove = (event: TouchEvent) => {
-      if (event.touches.length > 0) {
-        mouse.current = [event.touches[0].clientX, event.touches[0].clientY]
-      }
-    }
-
-    if (isMobile) {
-      window.addEventListener("touchmove", handleTouchMove, { passive: true })
-    } else {
-      window.addEventListener("mousemove", handleMouseMove)
-    }
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("touchmove", handleTouchMove)
-    }
-  }, [isMobile])
-
-  // 클라이언트 사이드에서만 렌더링
-  if (!isClient) {
-    return <div className="fixed inset-0 -z-10 bg-black" />
-  }
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
 
   return (
     <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 10], fov: 60 }} dpr={isMobile ? [1, 1.5] : [1, 2]}>
-        <ambientLight intensity={isMobile ? 0.3 : 0.2} />
-        <pointLight position={[10, 10, 10]} intensity={isMobile ? 0.6 : 0.8} color="#00C2A8" />
-        <pointLight position={[-10, -10, -10]} intensity={isMobile ? 0.3 : 0.5} color="#1C1F2A" />
-        <pointLight position={[0, 0, 5]} intensity={isMobile ? 0.2 : 0.3} color="#ffffff" />
+      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
+        <ambientLight intensity={0.2} />
+        <pointLight position={[10, 10, 10]} intensity={0.8} color="#00C2A8" />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#1C1F2A" />
+        <pointLight position={[0, 0, 5]} intensity={0.3} color="#ffffff" />
 
         <ParticleField mouse={mouse} />
         <FloatingNodes scrollProgress={scrollProgress} />
-        {!isMobile && <ConnectionLines scrollProgress={scrollProgress} />}
+        <ConnectionLines scrollProgress={scrollProgress} />
       </Canvas>
     </div>
   )
