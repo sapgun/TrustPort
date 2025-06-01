@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import {
   ArrowRight,
@@ -24,14 +24,22 @@ import { Textarea } from "@/components/ui/textarea"
 import { InteractiveBackground } from "@/components/interactive-background"
 import { ScrollBasedAnimation, ParallaxSection } from "@/components/scroll-based-animation"
 import { EnhancedThreeScene } from "@/components/enhanced-three-scene"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function TrustPortLanding() {
   const { scrollYProgress } = useScroll()
   const scrollProgress = useTransform(scrollYProgress, [0, 1], [0, 1])
+  const isMobile = useIsMobile()
+  const [mounted, setMounted] = useState(false)
+
+  // 클라이언트 사이드에서만 렌더링
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white relative">
-      <InteractiveBackground scrollProgress={scrollProgress.get()} />
+      {mounted && <InteractiveBackground scrollProgress={scrollProgress.get()} />}
       <Header />
       <HeroSection />
       <FeaturesSection />
@@ -90,19 +98,20 @@ function Header() {
 
 function HeroSection() {
   const ref = useRef(null)
+  const isMobile = useIsMobile()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   })
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", isMobile ? "30%" : "50%"])
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
 
   return (
     <section ref={ref} className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <motion.div style={{ y, opacity }} className="container mx-auto px-6 text-center relative z-10">
         <motion.h1
-          className="text-6xl lg:text-8xl font-bold mb-8 leading-tight"
+          className={`font-bold mb-8 leading-tight ${isMobile ? "text-4xl lg:text-6xl" : "text-6xl lg:text-8xl"}`}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -110,13 +119,17 @@ function HeroSection() {
           Web3 실명 인증의{" "}
           <motion.span
             className="text-[#00C2A8]"
-            animate={{
-              textShadow: [
-                "0 0 20px rgba(0, 194, 168, 0.5)",
-                "0 0 40px rgba(0, 194, 168, 0.8)",
-                "0 0 20px rgba(0, 194, 168, 0.5)",
-              ],
-            }}
+            animate={
+              !isMobile
+                ? {
+                    textShadow: [
+                      "0 0 20px rgba(0, 194, 168, 0.5)",
+                      "0 0 40px rgba(0, 194, 168, 0.8)",
+                      "0 0 20px rgba(0, 194, 168, 0.5)",
+                    ],
+                  }
+                : {}
+            }
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           >
             게이트웨이
@@ -124,25 +137,29 @@ function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="text-xl lg:text-2xl mb-12 text-gray-300 leading-relaxed max-w-4xl mx-auto"
+          className={`mb-12 text-gray-300 leading-relaxed max-w-4xl mx-auto ${
+            isMobile ? "text-lg" : "text-xl lg:text-2xl"
+          }`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
           PASS 기반 실명 인증부터 DID 생성, Web3 온체인 참여까지
-          <br />
+          <br className={isMobile ? "hidden" : "block"} />
           신뢰할 수 있는 디지털 신원의 새로운 표준
         </motion.p>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center"
+          className={`gap-6 justify-center ${isMobile ? "flex flex-col items-center" : "flex flex-col sm:flex-row"}`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
         >
           <Button
             size="lg"
-            className="bg-[#00C2A8] hover:bg-[#00A693] text-white group px-8 py-4 text-lg border border-[#00C2A8]/50"
+            className={`bg-[#00C2A8] hover:bg-[#00A693] text-white group border border-[#00C2A8]/50 ${
+              isMobile ? "w-full max-w-xs" : "px-8 py-4"
+            } text-lg`}
           >
             지금 시작하기
             <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -150,7 +167,9 @@ function HeroSection() {
           <Button
             size="lg"
             variant="outline"
-            className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg"
+            className={`border-white/30 text-white hover:bg-white/10 text-lg ${
+              isMobile ? "w-full max-w-xs" : "px-8 py-4"
+            }`}
           >
             <Play className="mr-2 h-5 w-5" />
             데모 보기
@@ -158,17 +177,20 @@ function HeroSection() {
         </motion.div>
       </motion.div>
 
-      <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-      >
-        <ChevronDown className="h-8 w-8 text-[#00C2A8]" />
-      </motion.div>
+      {!isMobile && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+        >
+          <ChevronDown className="h-8 w-8 text-[#00C2A8]" />
+        </motion.div>
+      )}
     </section>
   )
 }
 
+// 나머지 컴포넌트는 변경 없음
 function FeaturesSection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
@@ -402,10 +424,30 @@ function TeamSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   const team = [
-    { name: "김개발", role: "Lead Developer", image: "/placeholder.svg?height=200&width=200" },
-    { name: "이블록", role: "Blockchain Engineer", image: "/placeholder.svg?height=200&width=200" },
-    { name: "박디자인", role: "UI/UX Designer", image: "/placeholder.svg?height=200&width=200" },
-    { name: "최보안", role: "Security Specialist", image: "/placeholder.svg?height=200&width=200" },
+    {
+      name: "김개발",
+      role: "Lead Developer",
+      image: "/placeholder.svg?height=300&width=300",
+      description: "10년 경력의 풀스택 개발자로 블록체인 기술에 특화",
+    },
+    {
+      name: "이블록",
+      role: "Blockchain Engineer",
+      image: "/placeholder.svg?height=300&width=300",
+      description: "이더리움과 솔라나 생태계 전문가, DeFi 프로토콜 개발 경험",
+    },
+    {
+      name: "박디자인",
+      role: "UI/UX Designer",
+      image: "/placeholder.svg?height=300&width=300",
+      description: "사용자 중심 디자인으로 복잡한 Web3 서비스를 직관적으로 설계",
+    },
+    {
+      name: "최보안",
+      role: "Security Specialist",
+      image: "/placeholder.svg?height=300&width=300",
+      description: "암호학 박사, 영지식 증명과 보안 감사 전문가",
+    },
   ]
 
   const partners = ["PASS 인증기관", "블록체인 파트너", "정부기관", "금융기관"]
@@ -437,15 +479,21 @@ function TeamSection() {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                 >
-                  <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4 border-2 border-[#00C2A8]/30 group-hover:border-[#00C2A8] transition-colors">
-                    <img
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h4 className="font-semibold text-white">{member.name}</h4>
-                  <p className="text-gray-400">{member.role}</p>
+                  <motion.div
+                    className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4 border-3 border-[#00C2A8]/30 group-hover:border-[#00C2A8] transition-all duration-300 bg-gradient-to-br from-[#1C1F2A] to-[#2A2F3A] p-1 shadow-lg group-hover:shadow-[#00C2A8]/25"
+                    whileHover={{ scale: 1.05, rotate: 2 }}
+                  >
+                    <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                      <img
+                        src={member.image || "/placeholder.svg"}
+                        alt={`${member.name} - ${member.role}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </div>
+                  </motion.div>
+                  <h4 className="font-semibold text-white text-lg mb-1">{member.name}</h4>
+                  <p className="text-[#00C2A8] font-medium mb-2">{member.role}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{member.description}</p>
                 </motion.div>
               </ScrollBasedAnimation>
             ))}
