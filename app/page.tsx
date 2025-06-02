@@ -693,6 +693,7 @@ function VisualGallerySection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
+  const { t } = useLanguage()
 
   const visualImages = [
     {
@@ -748,12 +749,10 @@ function VisualGallerySection() {
               className="inline-flex items-center gap-2 bg-[#00C2A8]/10 border border-[#00C2A8]/30 rounded-full px-4 py-2 mb-6"
               whileHover={{ scale: 1.05 }}
             >
-              <span className="text-[#00C2A8] font-medium">Visual Gallery</span>
+              <span className="text-[#00C2A8] font-medium">{t("gallery.badge")}</span>
             </motion.div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">TrustPort 비주얼 갤러리</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              TrustPort의 비전과 기술을 시각적으로 표현한 이미지 컬렉션
-            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">{t("gallery.title")}</h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">{t("gallery.subtitle")}</p>
           </div>
         </ScrollBasedAnimation>
 
@@ -849,7 +848,7 @@ function PaymentSolutionsSection() {
               whileHover={{ scale: 1.05 }}
             >
               <CreditCard className="h-5 w-5 text-[#00C2A8]" />
-              <span className="text-[#00C2A8] font-medium">Payment Solutions</span>
+              <span className="text-[#00C2A8] font-medium">{t("payment.badge")}</span>
             </motion.div>
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">{t("payment.title")}</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">{t("payment.subtitle")}</p>
@@ -1061,32 +1060,32 @@ function TeamSection() {
 
   const team = [
     {
-      name: "김개발",
-      role: "Lead Developer",
+      name: t("team.member1.name"),
+      role: t("team.member1.role"),
       image:
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%B9%9C%EC%A0%88%ED%95%9C%20%EB%AF%B8%EC%86%8C%EC%9D%98%20%EC%BA%90%EB%A6%AD%ED%84%B0%20%EC%B4%88%EC%83%81-Sr8hMVS2zUWRIxLbneJWxTFCQ24c3u.png",
     },
     {
-      name: "이블록",
-      role: "Blockchain Engineer",
+      name: t("team.member2.name"),
+      role: t("team.member2.role"),
       image:
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%B9%9C%EA%B7%BC%ED%95%9C%20%EB%94%94%EC%A7%80%ED%84%B8%20%EC%95%84%EB%B0%94%ED%83%80-xJdRY4VAG45SyriuG3Xww3FIwt08v8.png",
     },
     {
-      name: "박디자인",
-      role: "UI/UX Designer",
+      name: t("team.member3.name"),
+      role: t("team.member3.role"),
       image:
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%B9%9C%EA%B7%BC%ED%95%9C%20%EB%AF%B8%EC%86%8C%EC%9D%98%203D%20%EC%BA%90%EB%A6%AD%ED%84%B0-gr3IjVolP2yEF5gRw0ItJ0SvFSXRKG.png",
     },
     {
-      name: "최보안",
-      role: "Security Specialist",
+      name: t("team.member4.name"),
+      role: t("team.member4.role"),
       image:
         "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EC%B9%9C%EC%A0%88%ED%95%9C%20%EB%AF%B8%EC%86%8C%EC%99%80%20%EC%97%84%EC%A7%80%20%EC%B2%99-Sumkfu5zpJjJNHzNxqWrAvlRdCHDdi.png",
     },
   ]
 
-  const partners = ["PASS 인증기관", "블록체인 파트너", "정부기관", "금융기관"]
+  const partners = [t("team.partner1"), t("team.partner2"), t("team.partner3"), t("team.partner4")]
 
   return (
     <section id="team" ref={ref} className="py-20 relative">

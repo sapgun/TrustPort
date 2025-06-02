@@ -128,12 +128,37 @@ const translations = {
     "payment.summary.item3": "실명 인증과 신뢰 점수 기반 위험 관리",
     "payment.summary.item4": "MVP 이후 B2G/B2C 결제 서비스로 확장 가능",
 
+    // Visual Gallery 섹션
+    "gallery.title": "TrustPort 비주얼 갤러리",
+    "gallery.subtitle": "TrustPort의 비전과 기술을 시각적으로 표현한 이미지 컬렉션",
+    "gallery.badge": "Visual Gallery",
+
     // 팀 섹션
     "team.title": "팀 & 파트너",
     "team.subtitle": "Web3와 보안 전문가들이 함께 만들어가는 신뢰의 생태계",
     "team.sectionTitle": "팀",
     "team.partner.sectionTitle": "파트너",
     "team.download": "IR 자료 다운로드",
+    // 팀원 이름들
+    "team.member1.name": "김개발",
+    "team.member2.name": "이블록",
+    "team.member3.name": "박디자인",
+    "team.member4.name": "최보안",
+
+    // 팀 섹션 - 역할들
+    "team.member1.role": "Lead Developer",
+    "team.member2.role": "Blockchain Engineer",
+    "team.member3.role": "UI/UX Designer",
+    "team.member4.role": "Security Specialist",
+
+    // 파트너들
+    "team.partner1": "PASS 인증기관",
+    "team.partner2": "블록체인 파트너",
+    "team.partner3": "정부기관",
+    "team.partner4": "금융기관",
+
+    // Payment Solutions 섹션
+    "payment.badge": "Payment Solutions",
 
     // CTA 섹션
     "cta.title": "지금 시작하세요",
@@ -149,6 +174,7 @@ const translations = {
 
     // 푸터
     "footer.copyright": "© 2025 TrustPort. All rights reserved.",
+    "footer.rights": "All rights reserved.",
   },
   en: {
     // Metadata
@@ -266,12 +292,38 @@ const translations = {
     "payment.summary.item3": "Risk management based on identity verification and trust scores",
     "payment.summary.item4": "Expandable to B2G/B2C payment services after MVP",
 
+    // Visual Gallery 섹션
+    "gallery.title": "TrustPort Visual Gallery",
+    "gallery.subtitle": "A visual collection representing TrustPort's vision and technology",
+    "gallery.badge": "Visual Gallery",
+
     // Team Section
     "team.title": "Team & Partners",
     "team.subtitle": "Web3 and security experts building a trusted ecosystem together",
     "team.sectionTitle": "Team",
     "team.partner.sectionTitle": "Partners",
     "team.download": "Download IR Materials",
+
+    // 팀 섹션 - 팀원 이름들 (영어는 동일하게 유지하거나 영어식 이름으로)
+    "team.member1.name": "Kim Dev",
+    "team.member2.name": "Lee Block",
+    "team.member3.name": "Park Design",
+    "team.member4.name": "Choi Security",
+
+    // 팀 섹션 - 역할들
+    "team.member1.role": "Lead Developer",
+    "team.member2.role": "Blockchain Engineer",
+    "team.member3.role": "UI/UX Designer",
+    "team.member4.role": "Security Specialist",
+
+    // 파트너들
+    "team.partner1": "PASS Certification Authority",
+    "team.partner2": "Blockchain Partners",
+    "team.partner3": "Government Agencies",
+    "team.partner4": "Financial Institutions",
+
+    // Payment Solutions 섹션
+    "payment.badge": "Payment Solutions",
 
     // CTA Section
     "cta.title": "Start Now",
@@ -287,6 +339,7 @@ const translations = {
 
     // Footer
     "footer.copyright": "© 2025 TrustPort. All rights reserved.",
+    "footer.rights": "All rights reserved.",
   },
 }
 
