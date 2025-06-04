@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useEffect, useRef } from "react"
-import { motion, useScroll, useTransform, useInView } from "framer-motion"
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion"
 import {
   ArrowRight,
   Shield,
@@ -17,6 +17,8 @@ import {
   CreditCard,
   CheckCircle,
   DollarSign,
+  ArrowLeft,
+  Check,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -555,40 +557,169 @@ function FeaturesSection() {
 function UseCasesSection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [expandedCase, setExpandedCase] = useState<string | null>(null)
   const { t } = useLanguage()
 
   const useCases = [
     {
+      id: "dao",
       title: t("useCases.dao.title"),
       description: t("useCases.dao.description"),
       icon: "🏛️",
       color: "from-blue-500 to-blue-600",
     },
     {
+      id: "welfare",
       title: t("useCases.welfare.title"),
       description: t("useCases.welfare.description"),
       icon: "💰",
       color: "from-green-500 to-green-600",
     },
     {
+      id: "nft",
       title: t("useCases.nft.title"),
       description: t("useCases.nft.description"),
       icon: "🎨",
       color: "from-purple-500 to-purple-600",
     },
     {
+      id: "airdrop",
       title: t("useCases.airdrop.title"),
       description: t("useCases.airdrop.description"),
       icon: "🪂",
       color: "from-orange-500 to-orange-600",
     },
     {
+      id: "defi",
       title: t("useCases.defi.title"),
       description: t("useCases.defi.description"),
       icon: "💳",
       color: "from-teal-500 to-teal-600",
     },
   ]
+
+  const getScenarioSteps = (caseId: string) => {
+    const steps = []
+    for (let i = 1; i <= 5; i++) {
+      steps.push({
+        step: i,
+        title: t(`useCases.${caseId}.scenario.step${i}`),
+        description: t(`useCases.${caseId}.scenario.step${i}.desc`),
+      })
+    }
+    return steps
+  }
+
+  const ScenarioVisualization = ({ caseId }: { caseId: string }) => {
+    const steps = getScenarioSteps(caseId)
+    const [currentStep, setCurrentStep] = useState(0)
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentStep((prev) => (prev + 1) % steps.length)
+      }, 3000)
+      return () => clearInterval(interval)
+    }, [steps.length])
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-8 p-6 bg-black/60 rounded-xl border border-[#00C2A8]/30"
+      >
+        <h4 className="text-2xl font-bold text-white mb-6 text-center">{t(`useCases.${caseId}.scenario.title`)}</h4>
+
+        {/* 프로그레스 바 */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-2">
+            {steps.map((_, index) => (
+              <div
+                key={index}
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 ${
+                  index <= currentStep ? "bg-[#00C2A8] text-white scale-110" : "bg-gray-600 text-gray-400"
+                }`}
+              >
+                {index < currentStep ? <Check className="h-4 w-4" /> : index + 1}
+              </div>
+            ))}
+          </div>
+          <div className="w-full bg-gray-700 rounded-full h-2">
+            <motion.div
+              className="bg-[#00C2A8] h-2 rounded-full"
+              initial={{ width: "0%" }}
+              animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
+        </div>
+
+        {/* 현재 단계 표시 */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <div className="mb-4">
+              <span className="inline-block px-3 py-1 bg-[#00C2A8]/20 text-[#00C2A8] rounded-full text-sm font-medium mb-2">
+                단계 {currentStep + 1}
+              </span>
+              <h5 className="text-xl font-semibold text-white mb-2">{steps[currentStep].title}</h5>
+              <p className="text-gray-300">{steps[currentStep].description}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* 시각적 플로우차트 */}
+        <div className="mt-8 grid grid-cols-5 gap-4">
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              className={`p-3 rounded-lg border text-center transition-all duration-500 ${
+                index <= currentStep ? "border-[#00C2A8] bg-[#00C2A8]/10" : "border-gray-600 bg-gray-800/50"
+              }`}
+              animate={{
+                scale: index === currentStep ? 1.05 : 1,
+                opacity: index <= currentStep ? 1 : 0.5,
+              }}
+            >
+              <div
+                className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center text-sm font-bold ${
+                  index <= currentStep ? "bg-[#00C2A8] text-white" : "bg-gray-600 text-gray-400"
+                }`}
+              >
+                {index < currentStep ? <Check className="h-4 w-4" /> : index + 1}
+              </div>
+              <p className="text-xs text-gray-300 leading-tight">{step.title}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* 단계별 연결선 */}
+        <div className="relative mt-4">
+          <svg className="w-full h-8">
+            {steps.slice(0, -1).map((_, index) => (
+              <motion.line
+                key={index}
+                x1={`${(index + 0.5) * (100 / steps.length)}%`}
+                y1="50%"
+                x2={`${(index + 1.5) * (100 / steps.length)}%`}
+                y2="50%"
+                stroke={index < currentStep ? "#00C2A8" : "#4B5563"}
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: index < currentStep ? 1 : 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              />
+            ))}
+          </svg>
+        </div>
+      </motion.div>
+    )
+  }
 
   return (
     <section id="use-cases" ref={ref} className="py-20 relative">
@@ -604,40 +735,87 @@ function UseCasesSection() {
           </div>
         </ScrollBasedAnimation>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {useCases.map((useCase, index) => (
-            <ScrollBasedAnimation key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group cursor-pointer"
-              >
-                <Card className="h-full overflow-hidden bg-black/40 border-[#00C2A8]/20 backdrop-blur-sm hover:border-[#00C2A8]/50 transition-all duration-300">
-                  <div className={`h-2 bg-gradient-to-r ${useCase.color}`} />
-                  <CardHeader className="text-center">
-                    <motion.div className="text-4xl mb-4" whileHover={{ scale: 1.2, rotate: 10 }}>
-                      {useCase.icon}
-                    </motion.div>
-                    <CardTitle className="text-white group-hover:text-[#00C2A8] transition-colors">
-                      {useCase.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center mb-4 text-gray-300">{useCase.description}</CardDescription>
-                    <Button
-                      variant="outline"
-                      className="w-full border-[#00C2A8]/30 text-white hover:bg-[#00C2A8] hover:text-white hover:border-[#00C2A8] transition-all"
-                    >
-                      {t("useCases.viewMore")}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </ScrollBasedAnimation>
-          ))}
-        </div>
+        <AnimatePresence mode="wait">
+          {!expandedCase ? (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {useCases.map((useCase, index) => (
+                <ScrollBasedAnimation key={useCase.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    className="group cursor-pointer"
+                  >
+                    <Card className="h-full overflow-hidden bg-black/40 border-[#00C2A8]/20 backdrop-blur-sm hover:border-[#00C2A8]/50 transition-all duration-300">
+                      <div className={`h-2 bg-gradient-to-r ${useCase.color}`} />
+                      <CardHeader className="text-center">
+                        <motion.div className="text-4xl mb-4" whileHover={{ scale: 1.2, rotate: 10 }}>
+                          {useCase.icon}
+                        </motion.div>
+                        <CardTitle className="text-white group-hover:text-[#00C2A8] transition-colors">
+                          {useCase.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-center mb-4 text-gray-300">
+                          {useCase.description}
+                        </CardDescription>
+                        <Button
+                          variant="outline"
+                          className="w-full border-[#00C2A8]/30 text-white hover:bg-[#00C2A8] hover:text-white hover:border-[#00C2A8] transition-all"
+                          onClick={() => setExpandedCase(useCase.id)}
+                        >
+                          {t("useCases.viewMore")}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </ScrollBasedAnimation>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="expanded"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="max-w-6xl mx-auto"
+            >
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  className="border-[#00C2A8]/30 text-white hover:bg-[#00C2A8] hover:text-white"
+                  onClick={() => setExpandedCase(null)}
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t("useCases.backToList")}
+                </Button>
+              </div>
+
+              <Card className="bg-black/40 border-[#00C2A8]/20 backdrop-blur-sm">
+                <CardHeader className="text-center">
+                  <div className="text-6xl mb-4">{useCases.find((uc) => uc.id === expandedCase)?.icon}</div>
+                  <CardTitle className="text-3xl text-white mb-2">
+                    {useCases.find((uc) => uc.id === expandedCase)?.title}
+                  </CardTitle>
+                  <CardDescription className="text-xl text-gray-300">
+                    {useCases.find((uc) => uc.id === expandedCase)?.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ScenarioVisualization caseId={expandedCase} />
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   )
