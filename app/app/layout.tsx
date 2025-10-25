@@ -1,5 +1,4 @@
 import type React from "react"
-
 import ClientLayout from "./ClientLayout"
 
 export default function AppLayout({

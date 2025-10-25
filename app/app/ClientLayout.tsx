@@ -24,7 +24,7 @@ export default function ClientLayout({
 
   return (
     <div className="min-h-screen bg-slate-950">
-      {/* <CHANGE> Updated to dark theme navigation */}
+      {/* Updated to dark theme navigation */}
       <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -49,7 +49,7 @@ export default function ClientLayout({
                         : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
-                    {/* <CHANGE> Replaced emoji with lucide-react icon */}
+                    {/* Replaced emoji with lucide-react icon */}
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
                   </Link>
