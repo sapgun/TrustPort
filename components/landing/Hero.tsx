@@ -16,18 +16,20 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-32">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
-            Web3로 가는 관문
-            <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400">
-              신원 인증 시스템
+              누구나. 어떤 체인이든.
             </span>
+            <br />
+            안전하게 한 번에
           </h1>
 
           <p className="text-xl md:text-2xl text-slate-400 mb-6 max-w-3xl mx-auto leading-relaxed">
-            PASS 기반 신원 인증부터 DID 생성, Web3 온체인 참여까지
+            신뢰 기반 보상이 있는 보안 우선 멀티체인 게이트웨이
           </p>
 
-          <p className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto">신뢰할 수 있는 디지털 신원의 새로운 표준</p>
+          <p className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto">
+            PASS 인증부터 온체인 참여까지, 가장 빠르고 안전한 Web3 온보딩
+          </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
             <Link href="/app">
