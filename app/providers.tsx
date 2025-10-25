@@ -4,8 +4,10 @@ import type React from "react"
 import { PrivyProvider } from "@privy-io/react-auth"
 import { WagmiProvider } from "@privy-io/wagmi"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { wagmiConfig } from "./wagmi-config"
-import { useState } from "react"
+import { useState, useMemo } from "react"
+import { createConfig } from "@privy-io/wagmi"
+import { http } from "wagmi"
+import { mainnet, polygon, avalanche, arbitrum, base } from "wagmi/chains"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -18,6 +20,22 @@ export function Providers({ children }: { children: React.ReactNode }) {
           },
         },
       }),
+  )
+
+  const wagmiConfig = useMemo(
+    () =>
+      createConfig({
+        chains: [mainnet, polygon, avalanche, arbitrum, base],
+        transports: {
+          [mainnet.id]: http("https://eth.llamarpc.com"),
+          [polygon.id]: http("https://polygon-rpc.com"),
+          [avalanche.id]: http("https://api.avax.network/ext/bc/C/rpc"),
+          [arbitrum.id]: http("https://arb1.arbitrum.io/rpc"),
+          [base.id]: http("https://mainnet.base.org"),
+        },
+        ssr: true,
+      }),
+    [],
   )
 
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID
