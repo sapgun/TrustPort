@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { LogIn, Wallet, Star, CheckCircle } from "lucide-react"
 import { usePrivy } from "@privy-io/react-auth"
 import GoogleLogin from "@/components/auth/GoogleLogin"
+import EmailLogin from "@/components/auth/EmailLogin"
 
 export default function OnboardingFlow() {
   const router = useRouter()
@@ -21,7 +22,7 @@ export default function OnboardingFlow() {
   const steps = [
     {
       title: "소셜 로그인",
-      description: "Google 계정으로 간편하게 시작하세요",
+      description: "Google 또는 이메일 계정으로 간편하게 시작하세요",
       icon: LogIn,
     },
     {
@@ -82,8 +83,17 @@ export default function OnboardingFlow() {
           <p className="text-xl text-slate-400 mb-8">{currentStep.description}</p>
 
           {step === 1 && !authenticated && (
-            <div className="max-w-sm mx-auto">
+            <div className="max-w-sm mx-auto space-y-3">
               <GoogleLogin />
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-700"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-slate-900 text-slate-500">또는</span>
+                </div>
+              </div>
+              <EmailLogin />
             </div>
           )}
 

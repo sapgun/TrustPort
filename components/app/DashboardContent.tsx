@@ -1,23 +1,35 @@
 "use client"
 
 import { usePrivy, useWallets } from "@privy-io/react-auth"
-import { useBalance } from "wagmi"
-import { mainnet } from "wagmi/chains"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
+import { getWalletBalance } from "@/app/actions/blockchain"
 
 export default function DashboardContent() {
   const { ready, authenticated } = usePrivy()
   const { wallets } = useWallets()
+  const [ethBalance, setEthBalance] = useState("0.0000")
+  const [loading, setLoading] = useState(false)
 
   const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
-  const { data: ethBalance } = useBalance({
-    address: embeddedWallet?.address as `0x${string}` | undefined,
-    chainId: mainnet.id,
-    query: {
-      enabled: !!embeddedWallet?.address && ready && authenticated,
-    },
-  })
+
+  useEffect(() => {
+    if (embeddedWallet?.address && ready && authenticated) {
+      loadBalance()
+    }
+  }, [embeddedWallet?.address, ready, authenticated])
+
+  const loadBalance = async () => {
+    if (!embeddedWallet?.address) return
+
+    setLoading(true)
+    const result = await getWalletBalance(embeddedWallet.address, 1)
+    if (result.success) {
+      setEthBalance(result.formatted)
+    }
+    setLoading(false)
+  }
 
   return (
     <div className="space-y-8">
@@ -35,7 +47,7 @@ export default function DashboardContent() {
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
             <div className="text-teal-100 text-sm mb-1">Ethereum Balance</div>
             <div className="text-3xl font-bold">
-              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : "0.0000"} ETH
+              {loading ? <span className="animate-pulse">로딩...</span> : `${ethBalance} ETH`}
             </div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">

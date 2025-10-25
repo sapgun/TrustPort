@@ -1,46 +1,72 @@
 "use client"
 
 import { useWallets, usePrivy } from "@privy-io/react-auth"
-import { useBalance } from "wagmi"
-import { mainnet, polygon, avalanche, arbitrum, base } from "wagmi/chains"
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
+import { getMultiChainBalances } from "@/app/actions/blockchain"
 
 const SUPPORTED_CHAINS = [
   {
-    chain: mainnet,
+    id: 1,
     icon: "⟠",
     name: "Ethereum",
     color: "from-blue-400 to-blue-600",
+    symbol: "ETH",
   },
   {
-    chain: polygon,
+    id: 137,
     icon: "⬣",
     name: "Polygon",
     color: "from-purple-400 to-purple-600",
+    symbol: "MATIC",
   },
   {
-    chain: avalanche,
-    icon: "🔺",
-    name: "Avalanche",
-    color: "from-red-400 to-red-600",
-  },
-  {
-    chain: arbitrum,
+    id: 42161,
     icon: "🔷",
     name: "Arbitrum",
     color: "from-blue-300 to-blue-500",
+    symbol: "ETH",
   },
   {
-    chain: base,
+    id: 8453,
     icon: "🔵",
     name: "Base",
     color: "from-blue-500 to-indigo-600",
+    symbol: "ETH",
+  },
+  {
+    id: 10,
+    icon: "🔴",
+    name: "Optimism",
+    color: "from-red-400 to-red-600",
+    symbol: "ETH",
   },
 ]
 
 export default function MultiChainBalance() {
   const { ready } = usePrivy()
   const { wallets } = useWallets()
+  const [balances, setBalances] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
+
+  useEffect(() => {
+    if (embeddedWallet?.address && ready) {
+      loadBalances()
+    }
+  }, [embeddedWallet?.address, ready])
+
+  const loadBalances = async () => {
+    if (!embeddedWallet?.address) return
+
+    setLoading(true)
+    const result = await getMultiChainBalances(embeddedWallet.address)
+    if (result.success) {
+      setBalances(result.balances)
+    }
+    setLoading(false)
+  }
 
   if (!ready) {
     return (
@@ -49,8 +75,6 @@ export default function MultiChainBalance() {
       </div>
     )
   }
-
-  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
 
   if (!embeddedWallet) {
     return (
@@ -75,16 +99,10 @@ export default function MultiChainBalance() {
 
       {/* Balance Cards */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {SUPPORTED_CHAINS.map((item, idx) => (
-          <ChainBalanceCard
-            key={idx}
-            address={embeddedWallet.address as `0x${string}`}
-            chain={item.chain}
-            icon={item.icon}
-            name={item.name}
-            color={item.color}
-          />
-        ))}
+        {SUPPORTED_CHAINS.map((chain, idx) => {
+          const balance = balances.find((b) => b.chainId === chain.id)
+          return <ChainBalanceCard key={idx} chain={chain} balance={balance} loading={loading} />
+        })}
       </div>
 
       {/* Total Value (Mock for demo) */}
@@ -98,26 +116,14 @@ export default function MultiChainBalance() {
 }
 
 function ChainBalanceCard({
-  address,
   chain,
-  icon,
-  name,
-  color,
+  balance,
+  loading,
 }: {
-  address: `0x${string}`
   chain: any
-  icon: string
-  name: string
-  color: string
+  balance: any
+  loading: boolean
 }) {
-  const { data, isLoading, isError } = useBalance({
-    address,
-    chainId: chain.id,
-    query: {
-      enabled: !!address,
-    },
-  })
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -129,31 +135,29 @@ function ChainBalanceCard({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div
-            className={`w-12 h-12 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-2xl`}
+            className={`w-12 h-12 rounded-full bg-gradient-to-br ${chain.color} flex items-center justify-center text-2xl`}
           >
-            {icon}
+            {chain.icon}
           </div>
           <div>
-            <div className="font-bold text-slate-100">{name}</div>
+            <div className="font-bold text-slate-100">{chain.name}</div>
             <div className="text-xs text-slate-400">Chain ID: {chain.id}</div>
           </div>
         </div>
       </div>
 
       {/* Balance */}
-      {isLoading ? (
+      {loading ? (
         <div className="flex items-center gap-2 text-slate-400">
           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-teal-500" />
           <span className="text-sm">로딩 중...</span>
         </div>
-      ) : isError ? (
+      ) : balance?.success === false ? (
         <div className="text-red-400 text-sm">⚠️ 조회 실패</div>
       ) : (
         <div>
-          <div className="text-3xl font-bold text-slate-100 mb-1">
-            {data ? Number(data.formatted).toFixed(4) : "0.0000"}
-          </div>
-          <div className="text-sm text-slate-400">{data?.symbol || "ETH"}</div>
+          <div className="text-3xl font-bold text-slate-100 mb-1">{balance?.formatted || "0.0000"}</div>
+          <div className="text-sm text-slate-400">{chain.symbol}</div>
         </div>
       )}
 
