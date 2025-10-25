@@ -1,6 +1,6 @@
-// components/trust-score/OnChainAnalyzer.ts
+"use server"
 
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
+// components/trust-score/OnChainAnalyzer.ts
 
 interface AlchemyTransfer {
   to: string
@@ -12,7 +12,14 @@ interface AlchemyTransfer {
 
 // 1. Alchemy - 트랜잭션 히스토리
 export async function getTransactionHistory(address: string): Promise<AlchemyTransfer[]> {
-  const response = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`, {
+  const apiKey = process.env.ALCHEMY_API_KEY
+
+  if (!apiKey) {
+    console.error("[v0] ALCHEMY_API_KEY not found in environment variables")
+    return []
+  }
+
+  const response = await fetch(`https://eth-mainnet.g.alchemy.com/v2/${apiKey}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
