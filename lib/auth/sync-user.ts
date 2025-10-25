@@ -1,7 +1,6 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
-import { generateRandomName } from "@/lib/utils/random-name"
 
 export async function syncUserToSupabase(privyUser: {
   id: string
@@ -9,34 +8,27 @@ export async function syncUserToSupabase(privyUser: {
   google?: { email: string; name?: string; picture?: string } | null
   wallet?: { address: string } | null
 }) {
-  console.log("[v0] syncUserToSupabase 시작:", privyUser.id)
-
   const supabase = await createClient()
 
   const email = privyUser.email?.address || privyUser.google?.email || null
-  const displayName = privyUser.google?.name || generateRandomName()
+  const displayName = privyUser.google?.name || email?.split("@")[0] || "사용자"
   const avatarUrl = privyUser.google?.picture || null
 
-  const { data: existingProfile, error: fetchError } = await supabase
+  // 기존 프로필 확인
+  const { data: existingProfile } = await supabase
     .from("user_profiles")
     .select("*")
     .eq("privy_user_id", privyUser.id)
-    .maybeSingle()
-
-  if (fetchError) {
-    console.error("[v0] Failed to fetch user profile:", fetchError)
-    return { success: false, error: fetchError.message }
-  }
+    .single()
 
   if (existingProfile) {
-    console.log("[v0] 기존 프로필 업데이트:", existingProfile.id)
     // 기존 프로필 업데이트
     const { error } = await supabase
       .from("user_profiles")
       .update({
         email,
+        display_name: displayName,
         avatar_url: avatarUrl,
-        updated_at: new Date().toISOString(),
       })
       .eq("privy_user_id", privyUser.id)
 
@@ -45,10 +37,8 @@ export async function syncUserToSupabase(privyUser: {
       return { success: false, error: error.message }
     }
 
-    console.log("[v0] 프로필 업데이트 성공")
     return { success: true, profile: existingProfile }
   } else {
-    console.log("[v0] 새 프로필 생성 중...")
     // 새 프로필 생성
     const { data: newProfile, error } = await supabase
       .from("user_profiles")
@@ -68,7 +58,6 @@ export async function syncUserToSupabase(privyUser: {
       return { success: false, error: error.message }
     }
 
-    console.log("[v0] 새 프로필 생성 성공:", newProfile.id)
     return { success: true, profile: newProfile, isNew: true }
   }
 }

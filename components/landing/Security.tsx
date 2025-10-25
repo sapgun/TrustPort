@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Search, Shield, Clock, AlertTriangle, Bot, Settings } from "lucide-react"
+import InteractiveDemo from "./InteractiveDemo" // Import the new component
 
 export default function Security() {
   const securityFeatures = [
@@ -46,7 +47,7 @@ export default function Security() {
           <p className="text-lg text-teal-400 font-medium">보안은 선택이 아닌 기본입니다</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
           {securityFeatures.map((feature, idx) => {
             const Icon = feature.icon
             return (
@@ -67,6 +68,13 @@ export default function Security() {
             )
           })}
         </div>
+
+        {/* Interactive Demo Integration */}
+        <div className="mb-24">
+            <h3 className="text-3xl font-bold text-white mb-10 text-center">직접 체험해보세요</h3>
+            <InteractiveDemo />
+        </div>
+
 
         <div className="bg-black border border-slate-800 rounded-2xl p-8">
           <h3 className="text-2xl font-bold text-white mb-8 text-center">통합 보안 플로우</h3>

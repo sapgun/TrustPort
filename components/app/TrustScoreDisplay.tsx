@@ -1,69 +1,57 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useWallets, usePrivy } from "@privy-io/react-auth"
+import { useWallets } from "@privy-io/react-auth"
 import { getCachedTrustScore, type UserTrustScore } from "@/lib/trust-score/calculator"
 import { motion } from "framer-motion"
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts"
 
 export default function TrustScoreDisplay() {
-  const { ready } = usePrivy()
   const { wallets } = useWallets()
   const [trustScore, setTrustScore] = useState<UserTrustScore | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const wallet = ready && wallets.length > 0 ? wallets[0] : null
+  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
 
   useEffect(() => {
-    console.log("[v0] TrustScoreDisplay - Privy ready:", ready)
-    console.log("[v0] TrustScoreDisplay - wallets:", wallets)
-    console.log("[v0] TrustScoreDisplay - selected wallet:", wallet)
-
-    if (!ready) {
-      setLoading(true)
-      return
-    }
-
     async function loadScore() {
-      if (!wallet?.address) {
-        console.log("[v0] TrustScoreDisplay - No wallet address")
+      if (!embeddedWallet?.address) {
         setLoading(false)
         return
       }
 
       try {
-        console.log("[v0] TrustScoreDisplay - Loading score for:", wallet.address)
-        const score = await getCachedTrustScore(wallet.address)
-        console.log("[v0] TrustScoreDisplay - Score loaded:", score)
+        const score = await getCachedTrustScore(embeddedWallet.address)
         setTrustScore(score)
       } catch (error) {
-        console.error("[v0] Trust Score 로딩 실패:", error)
+        console.error("Trust Score 로딩 실패:", error)
       } finally {
         setLoading(false)
       }
     }
 
     loadScore()
-  }, [wallet, ready]) // Updated dependency array
+  }, [embeddedWallet?.address])
 
-  if (loading || !ready) {
+  if (loading) {
     return (
-      <div className="bg-slate-800 rounded-xl shadow-md p-8 text-center border border-slate-700">
+      <div className="bg-white rounded-xl shadow-md p-8 text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4" />
-        <p className="text-slate-400">Trust Score 계산 중...</p>
+        <p className="text-gray-600">Trust Score 계산 중...</p>
       </div>
     )
   }
 
   if (!trustScore) {
     return (
-      <div className="bg-slate-800 rounded-xl shadow-md p-8 text-center border border-slate-700">
+      <div className="bg-white rounded-xl shadow-md p-8 text-center">
         <div className="text-4xl mb-3">⭐</div>
-        <p className="text-slate-400">지갑을 연결하여 Trust Score를 확인하세요</p>
+        <p className="text-gray-600">지갑을 연결하여 Trust Score를 확인하세요</p>
       </div>
     )
   }
 
+  // 레이더 차트 데이터
   const chartData = [
     { category: "실명인증", value: trustScore.breakdown.identity, max: 300 },
     { category: "온체인", value: trustScore.breakdown.onchain, max: 200 },
@@ -120,8 +108,8 @@ export default function TrustScoreDisplay() {
       </motion.div>
 
       {/* Radar Chart */}
-      <div className="bg-slate-800 rounded-xl shadow-md p-6 border border-slate-700">
-        <h3 className="text-xl font-bold text-slate-100 mb-4">점수 분포</h3>
+      <div className="bg-white rounded-xl shadow-md p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">점수 분포</h3>
         <ResponsiveContainer width="100%" height={300}>
           <RadarChart data={chartData}>
             <PolarGrid />
@@ -133,8 +121,8 @@ export default function TrustScoreDisplay() {
       </div>
 
       {/* Breakdown Details */}
-      <div className="bg-slate-800 rounded-xl shadow-md p-6 border border-slate-700">
-        <h3 className="text-xl font-bold text-slate-100 mb-4">상세 점수</h3>
+      <div className="bg-white rounded-xl shadow-md p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">상세 점수</h3>
         <div className="space-y-4">
           {[
             {
@@ -176,23 +164,23 @@ export default function TrustScoreDisplay() {
             const percentage = (item.value / item.max) * 100
 
             return (
-              <div key={idx} className="border-b border-slate-700 pb-4 last:border-0">
+              <div key={idx} className="border-b border-gray-100 pb-4 last:border-0">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{item.icon}</span>
                     <div>
-                      <div className="font-semibold text-slate-100">{item.label}</div>
-                      <div className="text-xs text-slate-400">{item.description}</div>
+                      <div className="font-semibold text-gray-900">{item.label}</div>
+                      <div className="text-xs text-gray-500">{item.description}</div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-slate-100">
+                    <div className="font-bold text-gray-900">
                       {item.value} / {item.max}
                     </div>
-                    <div className="text-xs text-slate-400">{percentage.toFixed(0)}%</div>
+                    <div className="text-xs text-gray-500">{percentage.toFixed(0)}%</div>
                   </div>
                 </div>
-                <div className="w-full bg-slate-700 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-2">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
