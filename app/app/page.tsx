@@ -1,69 +1,58 @@
-"use client"
+// app/app/page.tsx
+"use client";
 
-import Link from "next/link"
-import { CreditCard, Star, Globe, CheckCircle, Shield } from "lucide-react"
-import TrustScoreCard from "@/components/app/TrustScoreCard"
-import trustScoreData from "@/data/trustScoreData.json"
+import { usePrivy } from "@privy-io/react-auth";
+import LoginButton from "@/components/auth/LoginButton";
 
-export default function AppDashboard() {
-  const userData = trustScoreData.users[0]
+export default function DashboardPage() {
+  const { ready, authenticated, user, logout } = usePrivy();
 
-  return (
-    <div className="space-y-8">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-white mb-2">TrustFi에 오신 것을 환영합니다</h1>
-        <p className="text-slate-400">안전하고 신뢰할 수 있는 Web3 경험을 시작하세요</p>
-      </div>
+  // Wait for the Privy SDK to be ready
+  if (!ready) {
+    return <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">Loading...</div>;
+  }
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {[
-          { title: "거래 실행", icon: CreditCard, path: "/app/transactions" },
-          { title: "Trust Score", icon: Star, path: "/app/trust-score" },
-          { title: "멀티체인", icon: Globe, path: "/app/multichain" },
-        ].map((action, idx) => {
-          const Icon = action.icon
-          return (
-            <Link key={idx} href={action.path}>
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 cursor-pointer hover:border-teal-500/50 transition-all group">
-                <div className="w-12 h-12 rounded-lg bg-teal-500/10 flex items-center justify-center mb-3 group-hover:bg-teal-500/20 transition-colors">
-                  <Icon className="w-6 h-6 text-teal-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">{action.title}</h3>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-
-      {/* Trust Score Preview */}
-      <TrustScoreCard userData={userData} />
-
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">최근 활동</h2>
-        <div className="space-y-3">
-          {userData.recentActivity.map((activity, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-700/50"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center">
-                  {activity.type === "safe_transaction" && <CheckCircle className="w-5 h-5 text-green-400" />}
-                  {activity.type === "kyc_verified" && <Shield className="w-5 h-5 text-teal-400" />}
-                </div>
-                <div>
-                  <div className="font-semibold text-white">
-                    {activity.type === "safe_transaction" && "안전한 거래 실행"}
-                    {activity.type === "kyc_verified" && "실명 인증 완료"}
-                  </div>
-                  <div className="text-sm text-slate-400">{new Date(activity.timestamp).toLocaleString("ko-KR")}</div>
-                </div>
-              </div>
-              <div className="text-teal-400 font-bold">+{activity.points}점</div>
+  // If the user is not authenticated, redirect to onboarding or show login
+  if (ready && !authenticated) {
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-white">
+            <div className="text-center p-8 max-w-md">
+                <h1 className="text-3xl font-bold mb-4">Please Log In</h1>
+                <p className="text-slate-400 mb-8">
+                    You need to be logged in to access the dashboard.
+                </p>
+                <LoginButton />
             </div>
-          ))}
         </div>
+    );
+  }
+
+  // If authenticated, show the dashboard
+  return (
+    <div className="min-h-screen bg-slate-950 text-white p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold">Welcome to your Dashboard</h1>
+            <button
+                onClick={logout}
+                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg transition-colors"
+            >
+                Logout
+            </button>
+        </div>
+
+        {user?.wallet ? (
+          <div className="bg-slate-900 p-6 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4 text-teal-400">Your Wallet Information</h2>
+            <p className="text-slate-300">
+              <span className="font-medium text-slate-500">Address:</span>
+              <code className="ml-2 bg-slate-800 px-2 py-1 rounded">{user.wallet.address}</code>
+            </p>
+          </div>
+        ) : (
+          <p>Could not find your wallet information.</p>
+        )}
       </div>
     </div>
-  )
+  );
 }

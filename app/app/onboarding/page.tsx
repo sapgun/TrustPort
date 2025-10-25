@@ -1,15 +1,16 @@
-"use client"
-
-import OnboardingFlow from "@/components/app/OnboardingFlow"
+// app/app/onboarding/page.tsx
+import LoginButton from "@/components/auth/LoginButton";
 
 export default function OnboardingPage() {
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-white mb-4">TrustFi 온보딩</h1>
-        <p className="text-xl text-slate-400">30초면 시작할 수 있습니다</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-white">
+      <div className="text-center p-8 max-w-md">
+        <h1 className="text-4xl font-bold mb-4">Welcome to TrustFi</h1>
+        <p className="text-slate-400 mb-8">
+          Login with your social account to create a secure wallet and get started.
+        </p>
+        <LoginButton />
       </div>
-      <OnboardingFlow />
     </div>
-  )
+  );
 }

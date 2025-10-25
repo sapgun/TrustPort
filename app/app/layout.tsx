@@ -1,10 +1,9 @@
-import type React from "react"
-import ClientLayout from "./ClientLayout"
-
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return <ClientLayout>{children}</ClientLayout>
+// app/app/layout.tsx
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div>
+      {/* TODO: Add App specific Navbar and Footer */}
+      <main>{children}</main>
+    </div>
+  );
 }
