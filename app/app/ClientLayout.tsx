@@ -15,11 +15,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { login, logout, authenticated, user, ready } = usePrivy()
 
   useEffect(() => {
+    console.log("[v0] ClientLayout - Privy 상태:", {
+      ready,
+      authenticated,
+      hasUser: !!user,
+      userEmail: user?.email?.address,
+      userWallet: user?.wallet?.address,
+    })
+  }, [ready, authenticated, user])
+
+  useEffect(() => {
     setMounted(true)
   }, [])
 
   useEffect(() => {
     if (ready && authenticated && user) {
+      console.log("[v0] 사용자 동기화 시작:", user.id)
       syncUserToSupabase(user).catch((error) => {
         console.error("[v0] Failed to sync user:", error)
       })
