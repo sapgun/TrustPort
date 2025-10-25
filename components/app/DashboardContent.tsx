@@ -1,51 +1,61 @@
 "use client"
 
-import { useWallets } from "@privy-io/react-auth"
-import { useBalance } from "wagmi"
-import { mainnet } from "wagmi/chains"
+import { usePrivy, useWallets } from "@privy-io/react-auth"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import { getWalletBalance } from "@/app/actions/blockchain"
 import { getCachedTrustScore, TrustScoreBreakdown } from "@/lib/trust-score/calculator"
 
 export default function DashboardContent() {
+  const { ready, authenticated } = usePrivy()
   const { wallets } = useWallets()
-  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
-  const { data: ethBalance } = useBalance({
-    address: embeddedWallet?.address as `0x${string}` | undefined,
-    chainId: mainnet.id,
-    query: {
-      enabled: !!embeddedWallet?.address,
-    },
-  })
 
-  const [trustScore, setTrustScore] = useState<TrustScoreBreakdown | null>(null);
-  const [loadingScore, setLoadingScore] = useState(true);
+  // State from TrustFi-update branch
+  const [ethBalance, setEthBalance] = useState("0.0000")
+  const [loadingBalance, setLoadingBalance] = useState(true)
+
+  // State from feat-implement-trust-score-and-transaction branch
+  const [trustScore, setTrustScore] = useState<TrustScoreBreakdown | null>(null)
+  const [loadingScore, setLoadingScore] = useState(true)
 
   useEffect(() => {
-    async function loadScore() {
-      if (!wallets[0]?.address) return;
-      setLoadingScore(true);
-      try {
-        const score = await getCachedTrustScore(wallets[0].address);
-        setTrustScore(score);
-      } catch (error) {
-        console.error("Failed to load trust score:", error);
-      } finally {
-        setLoadingScore(false);
-      }
+    const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
+    if (embeddedWallet?.address && ready && authenticated) {
+      loadAllData(embeddedWallet.address)
     }
+  }, [wallets, ready, authenticated])
 
-    loadScore();
-  }, [wallets])
+  // Combined data loading function
+  const loadAllData = async (address: string) => {
+    // Load balance using server action (from TrustFi-update)
+    setLoadingBalance(true)
+    const balanceResult = await getWalletBalance(address, 1)
+    if (balanceResult.success) {
+      setEthBalance(balanceResult.formatted)
+    }
+    setLoadingBalance(false)
 
+    // Load trust score (from feat-implement-trust-score-and-transaction)
+    setLoadingScore(true)
+    try {
+      const score = await getCachedTrustScore(address)
+      setTrustScore(score)
+    } catch (error) {
+      console.error("Failed to load trust score:", error)
+    } finally {
+      setLoadingScore(false)
+    }
+  }
+
+  // Tier calculation function (from feat-implement-trust-score-and-transaction)
   const getTier = (score: number | undefined) => {
-    if (!score) return "N/A";
-    if (score >= 800) return "Diamond";
-    if (score >= 700) return "Platinum";
-    if (score >= 600) return "Gold";
-    if (score >= 500) return "Silver";
-    return "Bronze";
+    if (!score) return "N/A"
+    if (score >= 800) return "Diamond"
+    if (score >= 700) return "Platinum"
+    if (score >= 600) return "Gold"
+    if (score >= 500) return "Silver"
+    return "Bronze"
   }
 
   return (
@@ -64,25 +74,28 @@ export default function DashboardContent() {
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
             <div className="text-teal-100 text-sm mb-1">Ethereum Balance</div>
             <div className="text-3xl font-bold">
-              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : "0.0000"} ETH
+              {/* Merged UI for balance */}
+              {loadingBalance ? <span className="animate-pulse">...</span> : `${ethBalance} ETH`}
             </div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
             <div className="text-teal-100 text-sm mb-1">Trust Score</div>
             <div className="text-3xl font-bold">
-              {loadingScore ? '...' : trustScore?.total ?? 'N/A'}
+              {/* Merged UI for trust score */}
+              {loadingScore ? <span className="animate-pulse">...</span> : trustScore?.total ?? 'N/A'}
             </div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
             <div className="text-teal-100 text-sm mb-1">Tier</div>
             <div className="text-3xl font-bold">
-              {loadingScore ? '...' : getTier(trustScore?.total)}
+              {/* Merged UI for tier */}
+              {loadingScore ? <span className="animate-pulse">...</span> : getTier(trustScore?.total)}
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions (No conflicts here) */}
       <div className="grid md:grid-cols-3 gap-6">
         {[
           {
