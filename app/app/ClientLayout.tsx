@@ -7,6 +7,7 @@ import { LayoutDashboard, Star, CreditCard, Globe, Wallet, User } from "lucide-r
 import { usePrivy } from "@privy-io/react-auth"
 import { useEffect, useState } from "react"
 import { syncUserToSupabase } from "@/lib/auth/sync-user"
+import { NotificationBell } from "@/components/notifications/NotificationBell"
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -91,6 +92,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="flex items-center gap-3">
               {authenticated ? (
                 <>
+                  <NotificationBell />
                   <Link
                     href="/app/profile"
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
