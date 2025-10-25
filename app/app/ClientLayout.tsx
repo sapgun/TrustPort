@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { LayoutDashboard, Star, CreditCard, Globe, Wallet } from "lucide-react"
 import { usePrivy } from "@privy-io/react-auth"
+import { useEffect, useState } from "react"
 
 export default function ClientLayout({
   children,
@@ -12,7 +13,12 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const { login, logout, authenticated, user } = usePrivy()
+  const [mounted, setMounted] = useState(false)
+  const { login, logout, authenticated, user, ready } = usePrivy()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const navItems = [
     { path: "/app", label: "대시보드", icon: LayoutDashboard },
@@ -20,6 +26,14 @@ export default function ClientLayout({
     { path: "/app/transactions", label: "거래", icon: CreditCard },
     { path: "/app/multichain", label: "멀티체인", icon: Globe },
   ]
+
+  if (!mounted || !ready) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-teal-400">로딩 중...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-slate-950">

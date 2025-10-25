@@ -1,34 +1,31 @@
-'use client';
+"use client"
 
-import { PrivyProvider } from '@privy-io/react-auth';
-import { WagmiProvider } from '@privy-io/wagmi';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { wagmiConfig } from './wagmi-config';
+import type React from "react"
 
-const queryClient = new QueryClient();
+import { PrivyProvider } from "@privy-io/react-auth"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { mainnet, polygon, avalanche, arbitrum, base } from "viem/chains"
+
+const queryClient = new QueryClient()
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ""}
       config={{
-        loginMethods: ['google', 'email', 'wallet'],
+        loginMethods: ["google", "email", "wallet"],
         appearance: {
-          theme: 'light',
-          accentColor: '#14b8a6',
-          logo: 'https://your-logo-url.com/logo.png',
+          theme: "dark",
+          accentColor: "#14b8a6",
         },
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets',
+          createOnLogin: "users-without-wallets",
           requireUserPasswordOnCreate: false,
         },
+        supportedChains: [mainnet, polygon, avalanche, arbitrum, base],
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig}>
-          {children}
-        </WagmiProvider>
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </PrivyProvider>
-  );
+  )
 }
