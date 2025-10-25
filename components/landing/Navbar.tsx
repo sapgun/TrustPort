@@ -21,7 +21,7 @@ export default function Navbar() {
             <span className="text-xl font-bold text-white">TrustFi</span>
           </Link>
 
-          <Link href="/app/onboarding">
+          <Link href="/app">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

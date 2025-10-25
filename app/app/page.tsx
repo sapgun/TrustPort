@@ -1,58 +1,114 @@
-// app/app/page.tsx
-"use client";
+'use client';
 
-import { usePrivy } from "@privy-io/react-auth";
-import LoginButton from "@/components/auth/LoginButton";
+import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useBalance } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-export default function DashboardPage() {
-  const { ready, authenticated, user, logout } = usePrivy();
+export default function Dashboard() {
+  const { authenticated } = usePrivy();
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(w => w.walletClientType === 'privy');
 
-  // Wait for the Privy SDK to be ready
-  if (!ready) {
-    return <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">Loading...</div>;
-  }
+  const { data: ethBalance } = useBalance({
+    address: embeddedWallet?.address as `0x${string}`,
+    chainId: mainnet.id,
+  });
 
-  // If the user is not authenticated, redirect to onboarding or show login
-  if (ready && !authenticated) {
+  if (!authenticated) {
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-white">
-            <div className="text-center p-8 max-w-md">
-                <h1 className="text-3xl font-bold mb-4">Please Log In</h1>
-                <p className="text-slate-400 mb-8">
-                    You need to be logged in to access the dashboard.
-                </p>
-                <LoginButton />
-            </div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🔐</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome to TrustFi
+          </h2>
+          <p className="text-gray-600 mb-6">
+            지갑을 연결하여 시작하세요
+          </p>
         </div>
+      </div>
     );
   }
 
-  // If authenticated, show the dashboard
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold">Welcome to your Dashboard</h1>
-            <button
-                onClick={logout}
-                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg transition-colors"
-            >
-                Logout
-            </button>
-        </div>
+    <div className="space-y-8">
+      {/* Welcome Banner */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-xl"
+      >
+        <h1 className="text-4xl font-bold mb-3">
+          Welcome to TrustFi 👋
+        </h1>
+        <p className="text-xl text-teal-100 mb-6">
+          안전하고 신뢰할 수 있는 Web3 경험을 시작하세요
+        </p>
 
-        {user?.wallet ? (
-          <div className="bg-slate-900 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold mb-4 text-teal-400">Your Wallet Information</h2>
-            <p className="text-slate-300">
-              <span className="font-medium text-slate-500">Address:</span>
-              <code className="ml-2 bg-slate-800 px-2 py-1 rounded">{user.wallet.address}</code>
-            </p>
+        {/* Quick Stats */}
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Ethereum Balance</div>
+            <div className="text-3xl font-bold">
+              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : '0.0000'} ETH
+            </div>
           </div>
-        ) : (
-          <p>Could not find your wallet information.</p>
-        )}
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Trust Score</div>
+            <div className="text-3xl font-bold">850</div>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Tier</div>
+            <div className="text-3xl font-bold">Gold</div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Quick Actions */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {[
+          {
+            title: '거래 실행',
+            icon: '💳',
+            path: '/app/transactions',
+            color: 'from-blue-400 to-blue-600',
+            description: '보안 검토 후 안전한 거래'
+          },
+          {
+            title: 'Trust Score',
+            icon: '⭐',
+            path: '/app/trust-score',
+            color: 'from-yellow-400 to-orange-600',
+            description: '신뢰 점수 상세 확인'
+          },
+          {
+            title: '멀티체인',
+            icon: '🌐',
+            path: '/app/multichain',
+            color: 'from-purple-400 to-pink-600',
+            description: '모든 체인 자산 통합'
+          }
+        ].map((action, idx) => (
+          <Link key={idx} href={action.path}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`bg-gradient-to-br ${action.color} rounded-xl p-6 text-white cursor-pointer shadow-lg hover:shadow-2xl transition-all`}
+            >
+              <div className="text-5xl mb-4">{action.icon}</div>
+              <h3 className="text-2xl font-bold mb-2">{action.title}</h3>
+              <p className="text-white/90">{action.description}</p>
+            </motion.div>
+          </Link>
+        ))}
       </div>
+
+      {/* More content... */}
     </div>
   );
 }
