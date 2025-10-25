@@ -1,69 +1,114 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { CreditCard, Star, Globe, CheckCircle, Shield } from "lucide-react"
-import TrustScoreCard from "@/components/app/TrustScoreCard"
-import trustScoreData from "@/data/trustScoreData.json"
+import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useBalance } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-export default function AppDashboard() {
-  const userData = trustScoreData.users[0]
+export default function Dashboard() {
+  const { authenticated } = usePrivy();
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(w => w.walletClientType === 'privy');
+
+  const { data: ethBalance } = useBalance({
+    address: embeddedWallet?.address as `0x${string}`,
+    chainId: mainnet.id,
+  });
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🔐</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome to TrustFi
+          </h2>
+          <p className="text-gray-600 mb-6">
+            지갑을 연결하여 시작하세요
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-white mb-2">TrustFi에 오신 것을 환영합니다</h1>
-        <p className="text-slate-400">안전하고 신뢰할 수 있는 Web3 경험을 시작하세요</p>
-      </div>
+      {/* Welcome Banner */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-xl"
+      >
+        <h1 className="text-4xl font-bold mb-3">
+          Welcome to TrustFi 👋
+        </h1>
+        <p className="text-xl text-teal-100 mb-6">
+          안전하고 신뢰할 수 있는 Web3 경험을 시작하세요
+        </p>
 
+        {/* Quick Stats */}
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Ethereum Balance</div>
+            <div className="text-3xl font-bold">
+              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : '0.0000'} ETH
+            </div>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Trust Score</div>
+            <div className="text-3xl font-bold">850</div>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
+            <div className="text-teal-100 text-sm mb-1">Tier</div>
+            <div className="text-3xl font-bold">Gold</div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Quick Actions */}
       <div className="grid md:grid-cols-3 gap-6">
         {[
-          { title: "거래 실행", icon: CreditCard, path: "/app/transactions" },
-          { title: "Trust Score", icon: Star, path: "/app/trust-score" },
-          { title: "멀티체인", icon: Globe, path: "/app/multichain" },
-        ].map((action, idx) => {
-          const Icon = action.icon
-          return (
-            <Link key={idx} href={action.path}>
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 cursor-pointer hover:border-teal-500/50 transition-all group">
-                <div className="w-12 h-12 rounded-lg bg-teal-500/10 flex items-center justify-center mb-3 group-hover:bg-teal-500/20 transition-colors">
-                  <Icon className="w-6 h-6 text-teal-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">{action.title}</h3>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-
-      {/* Trust Score Preview */}
-      <TrustScoreCard userData={userData} />
-
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">최근 활동</h2>
-        <div className="space-y-3">
-          {userData.recentActivity.map((activity, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-700/50"
+          {
+            title: '거래 실행',
+            icon: '💳',
+            path: '/app/transactions',
+            color: 'from-blue-400 to-blue-600',
+            description: '보안 검토 후 안전한 거래'
+          },
+          {
+            title: 'Trust Score',
+            icon: '⭐',
+            path: '/app/trust-score',
+            color: 'from-yellow-400 to-orange-600',
+            description: '신뢰 점수 상세 확인'
+          },
+          {
+            title: '멀티체인',
+            icon: '🌐',
+            path: '/app/multichain',
+            color: 'from-purple-400 to-pink-600',
+            description: '모든 체인 자산 통합'
+          }
+        ].map((action, idx) => (
+          <Link key={idx} href={action.path}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`bg-gradient-to-br ${action.color} rounded-xl p-6 text-white cursor-pointer shadow-lg hover:shadow-2xl transition-all`}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center">
-                  {activity.type === "safe_transaction" && <CheckCircle className="w-5 h-5 text-green-400" />}
-                  {activity.type === "kyc_verified" && <Shield className="w-5 h-5 text-teal-400" />}
-                </div>
-                <div>
-                  <div className="font-semibold text-white">
-                    {activity.type === "safe_transaction" && "안전한 거래 실행"}
-                    {activity.type === "kyc_verified" && "실명 인증 완료"}
-                  </div>
-                  <div className="text-sm text-slate-400">{new Date(activity.timestamp).toLocaleString("ko-KR")}</div>
-                </div>
-              </div>
-              <div className="text-teal-400 font-bold">+{activity.points}점</div>
-            </div>
-          ))}
-        </div>
+              <div className="text-5xl mb-4">{action.icon}</div>
+              <h3 className="text-2xl font-bold mb-2">{action.title}</h3>
+              <p className="text-white/90">{action.description}</p>
+            </motion.div>
+          </Link>
+        ))}
       </div>
+
+      {/* More content... */}
     </div>
-  )
+  );
 }
