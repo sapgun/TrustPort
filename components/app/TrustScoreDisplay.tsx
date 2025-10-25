@@ -163,7 +163,7 @@ export default function TrustScoreDisplay() {
               icon: "🏛️",
               value: trustScore.breakdown.institutional,
               max: 250,
-              description: "Gitcoin Passport, 파트너 인증",
+              description: "파트너 기관 인증, 검증된 자격증명",
             },
             {
               label: "보안 행동",
