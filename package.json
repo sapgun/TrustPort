@@ -45,6 +45,8 @@
     "@solana-program/system": "latest",
     "@solana-program/token": "latest",
     "@solana/kit": "latest",
+    "@supabase/ssr": "latest",
+    "@supabase/supabase-js": "latest",
     "@tanstack/react-query": "latest",
     "@vercel/analytics": "latest",
     "alchemy-sdk": "latest",
