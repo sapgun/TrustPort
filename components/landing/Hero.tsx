@@ -17,24 +17,22 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500/10 border border-teal-500/20 rounded-full text-teal-400 text-sm mb-8">
             <CheckCircle2 className="w-4 h-4" />
-            <span>BDACS Ideathon 2025</span>
+            <span>BDACS 아이디어톤 2025</span>
           </div>
 
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
-            Gateway to Web3
+            Web3로 가는 관문
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400">
-              Identity Verification
+              신원 인증 시스템
             </span>
           </h1>
 
           <p className="text-xl md:text-2xl text-slate-400 mb-6 max-w-3xl mx-auto leading-relaxed">
-            From PASS-based identity verification to DID creation and Web3 on-chain participation
+            PASS 기반 신원 인증부터 DID 생성, Web3 온체인 참여까지
           </p>
 
-          <p className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto">
-            The new standard for trusted digital identity
-          </p>
+          <p className="text-lg text-slate-500 mb-12 max-w-2xl mx-auto">신뢰할 수 있는 디지털 신원의 새로운 표준</p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
             <Link href="/app">
@@ -43,7 +41,7 @@ export default function Hero() {
                 whileTap={{ scale: 0.98 }}
                 className="group px-8 py-4 bg-teal-500 hover:bg-teal-400 text-black font-semibold text-lg rounded-lg transition-all flex items-center gap-2 justify-center"
               >
-                Start Now
+                지금 시작하기
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
@@ -53,16 +51,16 @@ export default function Hero() {
               whileTap={{ scale: 0.98 }}
               className="px-8 py-4 bg-transparent border border-slate-700 hover:border-slate-600 text-white font-semibold text-lg rounded-lg transition-all"
             >
-              Learn More
+              자세히 알아보기
             </motion.button>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             {[
-              { value: "99.8%", label: "Delta Neutral" },
-              { value: "6-Layer", label: "Security OS" },
-              { value: "10+", label: "Supported Chains" },
-              { value: "$0", label: "Onboarding Cost" },
+              { value: "99.8%", label: "델타 중립" },
+              { value: "6-Layer", label: "보안 OS" },
+              { value: "10+", label: "지원 체인" },
+              { value: "$0", label: "온보딩 비용" },
             ].map((stat, idx) => (
               <motion.div
                 key={idx}

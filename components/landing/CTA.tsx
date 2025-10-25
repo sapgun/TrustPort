@@ -14,11 +14,11 @@ export default function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">30 seconds is all it takes</h2>
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">30초면 충분합니다</h2>
           <p className="text-xl text-slate-400 mb-12 leading-relaxed max-w-2xl mx-auto">
-            From social login to Trust Score verification and secure transaction execution
+            소셜 로그인부터 신뢰 점수 인증, 안전한 트랜잭션 실행까지
             <br />
-            Experience it now
+            지금 바로 경험해보세요
           </p>
 
           <Link href="/app/onboarding">
@@ -27,16 +27,16 @@ export default function CTA() {
               whileTap={{ scale: 0.98 }}
               className="group inline-flex items-center gap-3 px-10 py-5 bg-teal-500 hover:bg-teal-400 text-black font-semibold text-xl rounded-lg transition-all"
             >
-              Start Demo
+              데모 시작하기
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
           </Link>
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Sparkles, text: "Free Onboarding" },
-              { icon: Lock, text: "6-Layer Security" },
-              { icon: Coins, text: "Behavior-Based Rewards" },
+              { icon: Sparkles, text: "무료 온보딩" },
+              { icon: Lock, text: "6단계 보안" },
+              { icon: Coins, text: "행동 기반 보상" },
             ].map((item, idx) => {
               const Icon = item.icon
               return (

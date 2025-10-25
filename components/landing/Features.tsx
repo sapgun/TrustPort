@@ -7,27 +7,27 @@ export default function Features() {
   const features = [
     {
       icon: Lock,
-      title: "Identity Layer",
-      description: "Real-name verification (PASS/KYC) + Trust Score",
-      details: "NFT tier system, on-chain trust evaluation",
+      title: "신원 레이어",
+      description: "실명 인증(PASS/KYC) + 신뢰 점수",
+      details: "NFT 등급 시스템, 온체인 신뢰도 평가",
     },
     {
       icon: Shield,
-      title: "Security OS",
-      description: "6-Layer security: NL Review, Firewall, Panic Revoke",
-      details: "Complete protection before, during, and after signing",
+      title: "보안 OS",
+      description: "6단계 보안: 자연어 리뷰, 방화벽, 긴급 취소",
+      details: "서명 전후 완벽한 보호",
     },
     {
       icon: Globe,
-      title: "Execution Layer",
-      description: "Multichain hub + 1-Click execution",
-      details: "Chain-agnostic, unified UX",
+      title: "실행 레이어",
+      description: "멀티체인 허브 + 원클릭 실행",
+      details: "체인 독립적, 통합 UX",
     },
     {
       icon: Coins,
-      title: "Reward Layer",
-      description: "Safe behavior → Trust Score increase → Rewards",
-      details: "Higher tiers unlock fee discounts and exclusive access",
+      title: "보상 레이어",
+      description: "안전한 행동 → 신뢰 점수 증가 → 보상",
+      details: "높은 등급은 수수료 할인과 독점 액세스 제공",
     },
   ]
 
@@ -35,8 +35,8 @@ export default function Features() {
     <section className="py-32 bg-black border-t border-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">4-Layer Architecture</h2>
-          <p className="text-xl text-slate-400">Identity + Security + Execution + Rewards</p>
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">4단계 아키텍처</h2>
+          <p className="text-xl text-slate-400">신원 + 보안 + 실행 + 보상</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

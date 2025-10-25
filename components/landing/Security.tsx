@@ -6,33 +6,33 @@ import { Search, Shield, Clock, AlertTriangle, Bot, Settings } from "lucide-reac
 export default function Security() {
   const securityFeatures = [
     {
-      title: "Natural-Language Review",
-      description: "Translates complex transactions into human language",
+      title: "자연어 리뷰",
+      description: "복잡한 트랜잭션을 사람이 이해할 수 있는 언어로 번역",
       icon: Search,
     },
     {
-      title: "Transaction Firewall",
-      description: "Instantly blocks transactions that meet risk criteria",
+      title: "트랜잭션 방화벽",
+      description: "위험 기준을 충족하는 트랜잭션을 즉시 차단",
       icon: Shield,
     },
     {
-      title: "Delay Protection",
-      description: "5-second timer + reconfirmation for high-risk transactions",
+      title: "지연 보호",
+      description: "고위험 트랜잭션에 대한 5초 타이머 + 재확인",
       icon: Clock,
     },
     {
-      title: "Panic Revoke",
-      description: "Emergency cancellation within 30 seconds after signing",
+      title: "긴급 취소",
+      description: "서명 후 30초 이내 긴급 취소 가능",
       icon: AlertTriangle,
     },
     {
-      title: "AI Risk Guard",
-      description: "Real-time risk score analysis and alerts",
+      title: "AI 위험 가드",
+      description: "실시간 위험 점수 분석 및 경고",
       icon: Bot,
     },
     {
-      title: "Policy Engine",
-      description: "Customizable security rule configuration",
+      title: "정책 엔진",
+      description: "맞춤형 보안 규칙 설정",
       icon: Settings,
     },
   ]
@@ -41,9 +41,9 @@ export default function Security() {
     <section className="py-32 bg-slate-950 border-t border-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">6-Layer Security OS</h2>
-          <p className="text-xl text-slate-400 mb-4">TrustFi verifies before you sign</p>
-          <p className="text-lg text-teal-400 font-medium">Security is not optional, it's the default</p>
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">6단계 보안 OS</h2>
+          <p className="text-xl text-slate-400 mb-4">TrustFi는 서명 전에 검증합니다</p>
+          <p className="text-lg text-teal-400 font-medium">보안은 선택이 아닌 기본입니다</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
@@ -69,18 +69,16 @@ export default function Security() {
         </div>
 
         <div className="bg-black border border-slate-800 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">Integrated Security Flow</h3>
+          <h3 className="text-2xl font-bold text-white mb-8 text-center">통합 보안 플로우</h3>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {["Sign Attempt", "NL Review", "AI Risk", "Firewall", "Delay", "Policy", "Execute", "Panic Revoke"].map(
-              (step, idx) => (
-                <div key={idx} className="flex items-center">
-                  <div className="bg-teal-500/10 border border-teal-500/30 text-teal-400 font-medium px-4 py-2 rounded-lg text-sm whitespace-nowrap">
-                    {step}
-                  </div>
-                  {idx < 7 && <div className="mx-2 text-teal-500/50">→</div>}
+            {["서명 시도", "자연어 리뷰", "AI 위험", "방화벽", "지연", "정책", "실행", "긴급 취소"].map((step, idx) => (
+              <div key={idx} className="flex items-center">
+                <div className="bg-teal-500/10 border border-teal-500/30 text-teal-400 font-medium px-4 py-2 rounded-lg text-sm whitespace-nowrap">
+                  {step}
                 </div>
-              ),
-            )}
+                {idx < 7 && <div className="mx-2 text-teal-500/50">→</div>}
+              </div>
+            ))}
           </div>
         </div>
       </div>
