@@ -147,7 +147,7 @@ function calculateTier(score: number): "BRONZE" | "SILVER" | "GOLD" | "PLATINUM"
   return "BRONZE"
 }
 
-export function getTierColor(tier: string): string {
+export async function getTierColor(tier: string): Promise<string> {
   switch (tier) {
     case "PLATINUM":
       return "from-cyan-400 to-blue-500"
@@ -162,7 +162,7 @@ export function getTierColor(tier: string): string {
   }
 }
 
-export function getTierIcon(tier: string): string {
+export async function getTierIcon(tier: string): Promise<string> {
   switch (tier) {
     case "PLATINUM":
       return "💎"
