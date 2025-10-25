@@ -1,35 +1,47 @@
-'use client';
+"use client"
 
-import { usePrivy, useWallets } from '@privy-io/react-auth';
-import { useBalance } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { usePrivy, useWallets } from "@privy-io/react-auth"
+import { useBalance } from "wagmi"
+import { mainnet } from "wagmi/chains"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
 
 export default function Dashboard() {
-  const { authenticated } = usePrivy();
-  const { wallets } = useWallets();
-  const embeddedWallet = wallets.find(w => w.walletClientType === 'privy');
-
+  const [mounted, setMounted] = useState(false)
+  const { authenticated, ready } = usePrivy()
+  const { wallets } = useWallets()
+  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
   const { data: ethBalance } = useBalance({
-    address: embeddedWallet?.address as `0x${string}`,
+    address: embeddedWallet?.address as `0x${string}` | undefined,
     chainId: mainnet.id,
-  });
+    query: {
+      enabled: !!embeddedWallet?.address,
+    },
+  })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted || !ready) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-teal-400">로딩 중...</div>
+      </div>
+    )
+  }
 
   if (!authenticated) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">🔐</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome to TrustFi
-          </h2>
-          <p className="text-gray-600 mb-6">
-            지갑을 연결하여 시작하세요
-          </p>
+          <h2 className="text-2xl font-bold text-slate-100 mb-2">Welcome to TrustFi</h2>
+          <p className="text-slate-400 mb-6">지갑을 연결하여 시작하세요</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -40,19 +52,15 @@ export default function Dashboard() {
         animate={{ opacity: 1, scale: 1 }}
         className="bg-gradient-to-r from-teal-500 via-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-xl"
       >
-        <h1 className="text-4xl font-bold mb-3">
-          Welcome to TrustFi 👋
-        </h1>
-        <p className="text-xl text-teal-100 mb-6">
-          안전하고 신뢰할 수 있는 Web3 경험을 시작하세요
-        </p>
+        <h1 className="text-4xl font-bold mb-3">Welcome to TrustFi 👋</h1>
+        <p className="text-xl text-teal-100 mb-6">안전하고 신뢰할 수 있는 Web3 경험을 시작하세요</p>
 
         {/* Quick Stats */}
         <div className="grid md:grid-cols-3 gap-4">
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
             <div className="text-teal-100 text-sm mb-1">Ethereum Balance</div>
             <div className="text-3xl font-bold">
-              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : '0.0000'} ETH
+              {ethBalance ? Number(ethBalance.formatted).toFixed(4) : "0.0000"} ETH
             </div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-lg">
@@ -70,26 +78,26 @@ export default function Dashboard() {
       <div className="grid md:grid-cols-3 gap-6">
         {[
           {
-            title: '거래 실행',
-            icon: '💳',
-            path: '/app/transactions',
-            color: 'from-blue-400 to-blue-600',
-            description: '보안 검토 후 안전한 거래'
+            title: "거래 실행",
+            icon: "💳",
+            path: "/app/transactions",
+            color: "from-blue-400 to-blue-600",
+            description: "보안 검토 후 안전한 거래",
           },
           {
-            title: 'Trust Score',
-            icon: '⭐',
-            path: '/app/trust-score',
-            color: 'from-yellow-400 to-orange-600',
-            description: '신뢰 점수 상세 확인'
+            title: "Trust Score",
+            icon: "⭐",
+            path: "/app/trust-score",
+            color: "from-yellow-400 to-orange-600",
+            description: "신뢰 점수 상세 확인",
           },
           {
-            title: '멀티체인',
-            icon: '🌐',
-            path: '/app/multichain',
-            color: 'from-purple-400 to-pink-600',
-            description: '모든 체인 자산 통합'
-          }
+            title: "멀티체인",
+            icon: "🌐",
+            path: "/app/multichain",
+            color: "from-purple-400 to-pink-600",
+            description: "모든 체인 자산 통합",
+          },
         ].map((action, idx) => (
           <Link key={idx} href={action.path}>
             <motion.div
@@ -107,8 +115,6 @@ export default function Dashboard() {
           </Link>
         ))}
       </div>
-
-      {/* More content... */}
     </div>
-  );
+  )
 }
