@@ -10,7 +10,6 @@ NEXT_PUBLIC_PRIVY_APP_ID=your-privy-app-id
 
 # Alchemy (블록체인 API)
 ALCHEMY_API_KEY=your-alchemy-api-key
-NEXT_PUBLIC_ALCHEMY_KEY=your-alchemy-key
 ALCHEMY_WEBHOOK_SIGNING_KEY=your-webhook-signing-key
 
 # Supabase (데이터베이스)
