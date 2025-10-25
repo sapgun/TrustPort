@@ -49,19 +49,28 @@ export default function MultiChainBalance() {
   const [balances, setBalances] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
 
-  const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
+  const connectedWallet = wallets[0]
 
   useEffect(() => {
-    if (embeddedWallet?.address && ready) {
+    console.log("[v0] MultiChainBalance - wallets:", wallets)
+    console.log("[v0] MultiChainBalance - connectedWallet:", connectedWallet)
+    console.log("[v0] MultiChainBalance - ready:", ready)
+  }, [wallets, connectedWallet, ready])
+
+  useEffect(() => {
+    if (connectedWallet?.address && ready) {
+      console.log("[v0] MultiChainBalance - 잔액 조회 시작:", connectedWallet.address)
       loadBalances()
     }
-  }, [embeddedWallet?.address, ready])
+  }, [connectedWallet?.address, ready])
 
   const loadBalances = async () => {
-    if (!embeddedWallet?.address) return
+    if (!connectedWallet?.address) return
 
     setLoading(true)
-    const result = await getMultiChainBalances(embeddedWallet.address)
+    console.log("[v0] MultiChainBalance - getMultiChainBalances 호출")
+    const result = await getMultiChainBalances(connectedWallet.address)
+    console.log("[v0] MultiChainBalance - 잔액 조회 결과:", result)
     if (result.success) {
       setBalances(result.balances)
     }
@@ -76,7 +85,7 @@ export default function MultiChainBalance() {
     )
   }
 
-  if (!embeddedWallet) {
+  if (!connectedWallet) {
     return (
       <div className="bg-slate-800 rounded-xl shadow-md p-8 text-center border border-slate-700">
         <div className="text-6xl mb-4">👛</div>
@@ -92,8 +101,11 @@ export default function MultiChainBalance() {
       <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl p-6 text-white">
         <h2 className="text-2xl font-bold mb-2">멀티체인 자산</h2>
         <p className="text-teal-100">모든 체인의 자산을 한눈에 확인하세요</p>
-        <div className="mt-4 font-mono text-sm bg-white/20 px-4 py-2 rounded-lg inline-block">
-          {embeddedWallet.address.slice(0, 6)}...{embeddedWallet.address.slice(-4)}
+        <div className="mt-4 space-y-2">
+          <div className="font-mono text-sm bg-white/20 px-4 py-2 rounded-lg inline-block">
+            {connectedWallet.address.slice(0, 6)}...{connectedWallet.address.slice(-4)}
+          </div>
+          <div className="text-xs text-teal-100">지갑 타입: {connectedWallet.walletClientType || "unknown"}</div>
         </div>
       </div>
 

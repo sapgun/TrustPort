@@ -19,8 +19,12 @@ function getAlchemyInstance(chainId: number) {
 
 export async function getWalletBalance(address: string, chainId = 1) {
   try {
+    console.log(`[v0] getWalletBalance - address: ${address}, chainId: ${chainId}`)
+
     const alchemy = getAlchemyInstance(chainId)
     const balance = await alchemy.core.getBalance(address)
+
+    console.log(`[v0] getWalletBalance - balance: ${balance.toString()}`)
 
     return {
       success: true,
@@ -28,7 +32,7 @@ export async function getWalletBalance(address: string, chainId = 1) {
       formatted: (Number(balance) / 1e18).toFixed(4),
     }
   } catch (error) {
-    console.error("잔액 조회 실패:", error)
+    console.error("[v0] 잔액 조회 실패:", error)
     return {
       success: false,
       error: "잔액 조회에 실패했습니다",
@@ -39,6 +43,8 @@ export async function getWalletBalance(address: string, chainId = 1) {
 }
 
 export async function getMultiChainBalances(address: string) {
+  console.log(`[v0] getMultiChainBalances - address: ${address}`)
+
   const chains = [
     { id: 1, name: "Ethereum" },
     { id: 137, name: "Polygon" },
@@ -57,6 +63,8 @@ export async function getMultiChainBalances(address: string) {
       }
     }),
   )
+
+  console.log(`[v0] getMultiChainBalances - 결과:`, balances)
 
   return {
     success: true,
