@@ -15,6 +15,7 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
+
   const { login, logout, authenticated, user, ready } = usePrivy()
 
   useEffect(() => {
@@ -22,12 +23,12 @@ export default function ClientLayout({
   }, [])
 
   useEffect(() => {
-    if (authenticated && user) {
+    if (ready && authenticated && user) {
       syncUserToSupabase(user).catch((error) => {
         console.error("[v0] Failed to sync user:", error)
       })
     }
-  }, [authenticated, user])
+  }, [ready, authenticated, user])
 
   const navItems = [
     { path: "/app", label: "대시보드", icon: LayoutDashboard },
@@ -39,7 +40,7 @@ export default function ClientLayout({
   if (!mounted || !ready) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-teal-400">로딩 중...</div>
+        <div className="text-teal-400 animate-pulse">로딩 중...</div>
       </div>
     )
   }

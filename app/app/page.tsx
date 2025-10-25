@@ -16,7 +16,7 @@ export default function Dashboard() {
     address: embeddedWallet?.address as `0x${string}` | undefined,
     chainId: mainnet.id,
     query: {
-      enabled: !!embeddedWallet?.address,
+      enabled: !!embeddedWallet?.address && ready && authenticated,
     },
   })
 
@@ -27,7 +27,7 @@ export default function Dashboard() {
   if (!mounted || !ready) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-teal-400">로딩 중...</div>
+        <div className="text-teal-400 animate-pulse">로딩 중...</div>
       </div>
     )
   }

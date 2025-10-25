@@ -198,7 +198,7 @@ importers:
         specifier: ^0.9.9
         version: 0.9.9(@types/react-dom@18.0.0)(@types/react@18.0.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       viem:
-        specifier: latest
+        specifier: ^2.38.4
         version: 2.38.4(bufferutil@4.0.9)(typescript@5.0.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       wagmi:
         specifier: latest
