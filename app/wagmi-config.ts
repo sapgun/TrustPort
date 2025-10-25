@@ -11,4 +11,5 @@ export const wagmiConfig = createConfig({
     [arbitrum.id]: http("https://arb1.arbitrum.io/rpc"),
     [base.id]: http("https://mainnet.base.org"),
   },
+  ssr: true,
 })

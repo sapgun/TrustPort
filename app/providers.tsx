@@ -5,10 +5,21 @@ import { PrivyProvider } from "@privy-io/react-auth"
 import { WagmiProvider } from "@privy-io/wagmi"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { wagmiConfig } from "./wagmi-config"
-
-const queryClient = new QueryClient()
+import { useState } from "react"
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            retry: 1,
+          },
+        },
+      }),
+  )
+
   const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID
 
   if (!privyAppId) {
@@ -39,7 +50,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
+        <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
+          {children}
+        </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>
   )

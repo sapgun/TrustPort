@@ -45,6 +45,9 @@ export default function ClientLayout({
     )
   }
 
+  const walletAddress = user?.wallet?.address
+  const displayAddress = walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "연결됨"
+
   return (
     <div className="min-h-screen bg-slate-950">
       <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
@@ -100,9 +103,7 @@ export default function ClientLayout({
                 }`}
               >
                 <Wallet className="w-4 h-4" />
-                {authenticated
-                  ? user?.wallet?.address?.slice(0, 6) + "..." + user?.wallet?.address?.slice(-4) || "연결됨"
-                  : "로그인"}
+                {authenticated ? displayAddress : "로그인"}
               </button>
             </div>
           </div>
