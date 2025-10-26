@@ -14,11 +14,18 @@ export default function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">30초면 충분합니다</h2>
-          <p className="text-xl text-slate-400 mb-12 leading-relaxed max-w-2xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-2 tracking-tight">30초면 충분합니다</h2>
+          <p className="text-sm text-slate-500 mb-6">30 Seconds is All You Need</p>
+
+          <p className="text-xl text-slate-400 mb-2 leading-relaxed max-w-2xl mx-auto">
             소셜 로그인부터 신뢰 점수 인증, 안전한 트랜잭션 실행까지
             <br />
             지금 바로 경험해보세요
+          </p>
+          <p className="text-sm text-slate-500/70 mb-12 max-w-2xl mx-auto">
+            From social login to trust score verification and secure transaction execution
+            <br />
+            Experience it now
           </p>
 
           <Link href="/app/onboarding">
@@ -34,9 +41,9 @@ export default function CTA() {
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Sparkles, text: "무료 온보딩" },
-              { icon: Lock, text: "6단계 보안" },
-              { icon: Coins, text: "행동 기반 보상" },
+              { icon: Sparkles, text: "무료 온보딩", textEn: "Free Onboarding" },
+              { icon: Lock, text: "6단계 보안", textEn: "6-Layer Security" },
+              { icon: Coins, text: "행동 기반 보상", textEn: "Activity-Based Rewards" },
             ].map((item, idx) => {
               const Icon = item.icon
               return (
@@ -44,7 +51,8 @@ export default function CTA() {
                   <div className="w-10 h-10 mx-auto rounded-lg bg-teal-500/10 flex items-center justify-center mb-3">
                     <Icon className="w-5 h-5 text-teal-400" />
                   </div>
-                  <div className="font-medium text-white">{item.text}</div>
+                  <div className="font-medium text-white mb-1">{item.text}</div>
+                  <div className="text-xs text-slate-500/70">{item.textEn}</div>
                 </div>
               )
             })}
