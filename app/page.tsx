@@ -1,6 +1,7 @@
 import Navbar from "@/components/landing/Navbar"
 import Hero from "@/components/landing/Hero"
 import DemoSection from "@/components/landing/DemoSection"
+import ProofOfTrust from "@/components/landing/ProofOfTrust"
 import Ecosystem from "@/components/landing/Ecosystem"
 import Technology from "@/components/landing/Technology"
 import Features from "@/components/landing/Features"
@@ -15,6 +16,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <DemoSection />
+      <ProofOfTrust />
       <Ecosystem />
       <Technology />
       <Features />
