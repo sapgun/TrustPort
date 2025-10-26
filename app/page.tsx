@@ -11,6 +11,7 @@ import PrivacyModel from "@/components/landing/PrivacyModel"
 import Partnership from "@/components/landing/Partnership"
 import RewardLayer from "@/components/landing/RewardLayer"
 import TrustPointSystem from "@/components/landing/TrustPointSystem"
+import PoolLineup from "@/components/landing/PoolLineup"
 import FutureRoadmap from "@/components/landing/FutureRoadmap"
 import CTA from "@/components/landing/CTA"
 
@@ -30,6 +31,7 @@ export default function Home() {
       <Partnership />
       <RewardLayer />
       <TrustPointSystem />
+      <PoolLineup />
       <FutureRoadmap />
       <CTA />
     </main>
