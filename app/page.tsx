@@ -4,6 +4,7 @@ import DemoSection from "@/components/landing/DemoSection"
 import ProofOfTrust from "@/components/landing/ProofOfTrust"
 import Ecosystem from "@/components/landing/Ecosystem"
 import Technology from "@/components/landing/Technology"
+import MultiLayerArchitecture from "@/components/landing/MultiLayerArchitecture"
 import Features from "@/components/landing/Features"
 import Security from "@/components/landing/Security"
 import PrivacyModel from "@/components/landing/PrivacyModel"
@@ -20,6 +21,7 @@ export default function Home() {
       <ProofOfTrust />
       <Ecosystem />
       <Technology />
+      <MultiLayerArchitecture />
       <Features />
       <Security />
       <PrivacyModel />
