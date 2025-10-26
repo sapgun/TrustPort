@@ -10,6 +10,7 @@ import Security from "@/components/landing/Security"
 import PrivacyModel from "@/components/landing/PrivacyModel"
 import Partnership from "@/components/landing/Partnership"
 import RewardLayer from "@/components/landing/RewardLayer"
+import TrustPointSystem from "@/components/landing/TrustPointSystem"
 import FutureRoadmap from "@/components/landing/FutureRoadmap"
 import CTA from "@/components/landing/CTA"
 
@@ -28,6 +29,7 @@ export default function Home() {
       <PrivacyModel />
       <Partnership />
       <RewardLayer />
+      <TrustPointSystem />
       <FutureRoadmap />
       <CTA />
     </main>

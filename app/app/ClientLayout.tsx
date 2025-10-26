@@ -3,7 +3,7 @@
 import type React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Star, CreditCard, Globe, Wallet, User, Trophy, Lock } from "lucide-react"
+import { LayoutDashboard, Star, CreditCard, Globe, Wallet, User, Trophy, Lock, Coins } from "lucide-react"
 import { usePrivy } from "@privy-io/react-auth"
 import { useEffect, useState } from "react"
 import { syncUserToSupabase } from "@/lib/auth/sync-user"
@@ -45,6 +45,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     { path: "/app/multichain", label: "멀티체인", icon: Globe },
     { path: "/app/leaderboard", label: "리더보드", icon: Trophy },
     { path: "/app/vault", label: "Vault", icon: Lock },
+    { path: "/app/earn", label: "Earn", icon: Coins },
   ]
 
   if (!mounted || !ready) {
