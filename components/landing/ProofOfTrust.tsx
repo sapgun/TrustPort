@@ -59,6 +59,7 @@ export default function ProofOfTrust() {
           >
             <span className="px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-semibold">
               혁신적 검증 메커니즘
+              <span className="block text-xs opacity-70 mt-0.5">Innovative Verification Mechanism</span>
             </span>
           </motion.div>
           <motion.h2
@@ -75,11 +76,22 @@ export default function ProofOfTrust() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed mb-2"
           >
             단순한 활동 증명을 넘어, 신뢰도 기반 검증으로
             <br />
             탈중앙화 신용 시스템의 새로운 표준을 제시합니다
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-base text-slate-500/70 max-w-3xl mx-auto leading-relaxed"
+          >
+            Beyond Simple Activity Proof, Trust-Based Verification
+            <br />
+            Setting a New Standard for Decentralized Credit Systems
           </motion.p>
         </div>
 
@@ -137,7 +149,8 @@ export default function ProofOfTrust() {
 
         {/* Trust Components */}
         <div className="mb-20">
-          <h3 className="text-3xl font-bold text-white text-center mb-12">Trust Score 구성 요소</h3>
+          <h3 className="text-3xl font-bold text-white text-center mb-2">Trust Score 구성 요소</h3>
+          <p className="text-lg text-slate-500/70 text-center mb-12">Trust Score Components</p>
           <div className="grid md:grid-cols-3 gap-6">
             {trustComponents.map((component, idx) => {
               const Icon = component.icon
@@ -153,8 +166,10 @@ export default function ProofOfTrust() {
                   <div className="w-12 h-12 rounded-lg bg-teal-500/10 flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6 text-teal-400" />
                   </div>
-                  <h4 className="text-lg font-bold text-white mb-2">{component.title}</h4>
-                  <p className="text-slate-400 text-sm">{component.description}</p>
+                  <h4 className="text-lg font-bold text-white mb-1">{component.title}</h4>
+                  <p className="text-sm text-slate-500/70 mb-2">{component.titleEn}</p>
+                  <p className="text-slate-400 text-sm mb-1">{component.description}</p>
+                  <p className="text-slate-500/70 text-xs">{component.descriptionEn}</p>
                 </motion.div>
               )
             })}
@@ -168,10 +183,11 @@ export default function ProofOfTrust() {
           viewport={{ once: true }}
           className="bg-gradient-to-br from-teal-500/5 to-cyan-500/5 border border-teal-500/20 rounded-2xl p-8 md:p-12"
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-2">
             <Award className="w-8 h-8 text-teal-400" />
             <h3 className="text-3xl font-bold text-white">Proof of Trust 활용</h3>
           </div>
+          <p className="text-lg text-slate-500/70 mb-8 ml-11">Proof of Trust Use Cases</p>
           <div className="grid md:grid-cols-2 gap-4">
             {useCases.map((useCase, idx) => (
               <motion.div
@@ -188,9 +204,14 @@ export default function ProofOfTrust() {
             ))}
           </div>
           <div className="mt-8 pt-8 border-t border-slate-800">
-            <p className="text-slate-300 text-center leading-relaxed">
+            <p className="text-slate-300 text-center leading-relaxed mb-2">
               Trust Score NFT가 증명서 역할을 하며, 높은 신뢰도를 가진 사용자는
               <br />더 많은 금융 서비스와 혜택에 접근할 수 있습니다
+            </p>
+            <p className="text-sm text-slate-500/70 text-center leading-relaxed">
+              Trust Score NFT serves as proof, and users with high trust
+              <br />
+              can access more financial services and benefits
             </p>
           </div>
         </motion.div>
