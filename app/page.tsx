@@ -32,17 +32,27 @@ export default function Home() {
       <div id="technology">
         <Technology />
       </div>
-      <MultiLayerArchitecture />
+      <div id="multi-layer">
+        <MultiLayerArchitecture />
+      </div>
       <div id="features">
         <Features />
       </div>
       <div id="security">
         <Security />
       </div>
-      <PrivacyModel />
-      <Partnership />
-      <RewardLayer />
-      <TrustPointSystem />
+      <div id="privacy">
+        <PrivacyModel />
+      </div>
+      <div id="partnership">
+        <Partnership />
+      </div>
+      <div id="rewards">
+        <RewardLayer />
+      </div>
+      <div id="trust-points">
+        <TrustPointSystem />
+      </div>
       <div id="pools">
         <PoolLineup />
       </div>

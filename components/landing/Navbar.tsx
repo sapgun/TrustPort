@@ -12,17 +12,29 @@ export default function Navbar() {
     { id: "demo", label: "데모", labelEn: "Demo" },
     { id: "proof-of-trust", label: "Proof of Trust", labelEn: "" },
     { id: "ecosystem", label: "생태계", labelEn: "Ecosystem" },
-    { id: "technology", label: "기술", labelEn: "Technology" },
-    { id: "features", label: "기능", labelEn: "Features" },
-    { id: "security", label: "보안", labelEn: "Security" },
-    { id: "pools", label: "풀", labelEn: "Pools" },
+    { id: "technology", label: "기술 스택", labelEn: "Technology" },
+    { id: "multi-layer", label: "멀티레이어", labelEn: "Multi-Layer" },
+    { id: "features", label: "핵심 기능", labelEn: "Features" },
+    { id: "security", label: "보안 OS", labelEn: "Security" },
+    { id: "privacy", label: "프라이버시", labelEn: "Privacy" },
+    { id: "partnership", label: "파트너십", labelEn: "Partnership" },
+    { id: "rewards", label: "리워드", labelEn: "Rewards" },
+    { id: "trust-points", label: "Trust Points", labelEn: "" },
+    { id: "pools", label: "풀 라인업", labelEn: "Pools" },
     { id: "roadmap", label: "로드맵", labelEn: "Roadmap" },
   ]
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+      const navbarHeight = 64 // h-16 = 64px
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - navbarHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
       setIsMenuOpen(false)
     }
   }
