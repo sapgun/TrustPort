@@ -6,6 +6,7 @@ import Ecosystem from "@/components/landing/Ecosystem"
 import Technology from "@/components/landing/Technology"
 import Features from "@/components/landing/Features"
 import Security from "@/components/landing/Security"
+import PrivacyModel from "@/components/landing/PrivacyModel"
 import Partnership from "@/components/landing/Partnership"
 import FutureRoadmap from "@/components/landing/FutureRoadmap"
 import CTA from "@/components/landing/CTA"
@@ -21,6 +22,7 @@ export default function Home() {
       <Technology />
       <Features />
       <Security />
+      <PrivacyModel />
       <Partnership />
       <FutureRoadmap />
       <CTA />
