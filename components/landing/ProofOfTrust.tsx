@@ -39,7 +39,8 @@ export default function ProofOfTrust() {
 
   const useCases = [
     "DeFi 프로토콜 접근 권한",
-    "무담보 대출 자격",
+    "마이크로론 자격 (소액 무담보)",
+    "하이브리드 담보 대출 금리 우대",
     "거버넌스 투표 가중치",
     "수수료 할인 혜택",
     "프리미엄 서비스 이용",

@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import {
-  TrendingUp,
   CreditCard,
   Building2,
   Shield,
@@ -12,19 +11,30 @@ import {
   Factory,
   Briefcase,
   Network,
+  Coins,
+  Wallet,
 } from "lucide-react"
 
 export default function FutureRoadmap() {
   const financialProducts = [
     {
-      icon: CreditCard,
-      title: "신용 대출",
-      description: "온체인 Trust Score 기반 무담보 대출",
-      features: ["낮은 금리", "빠른 승인", "유연한 상환"],
+      icon: Wallet,
+      title: "하이브리드 담보 대출",
+      description: "온체인 + 오프체인 자산 담보, Trust Score 기반 금리 우대",
+      features: ["암호화폐 담보", "부동산/주식 담보", "Trust Score 금리 할인"],
       color: "from-blue-500 to-cyan-500",
+      badge: "메인 상품",
     },
     {
-      icon: Building2,
+      icon: Coins,
+      title: "마이크로론",
+      description: "Trust Score 기반 소액 무담보 대출 ($100-$1,000)",
+      features: ["빠른 승인", "담보 불필요", "높은 Trust Score 필요"],
+      color: "from-green-500 to-emerald-500",
+      badge: "소액 전용",
+    },
+    {
+      icon: CreditCard,
       title: "DeFi 신용카드",
       description: "하이브리드 신용평가로 발급되는 Web3 신용카드",
       features: ["암호화폐 결제", "리워드 적립", "글로벌 사용"],
@@ -35,14 +45,7 @@ export default function FutureRoadmap() {
       title: "보험 상품",
       description: "신뢰도 기반 맞춤형 보험 및 보장",
       features: ["스마트 계약", "자동 청구", "투명한 보상"],
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      icon: TrendingUp,
-      title: "투자 상품",
-      description: "Trust Score 기반 투자 한도 및 우대 조건",
-      features: ["높은 수익률", "낮은 수수료", "전문가 관리"],
-      color: "from-orange-500 to-red-500",
+      color: "from-orange-500 to-amber-500",
     },
   ]
 
@@ -146,8 +149,8 @@ export default function FutureRoadmap() {
 
           <div className="mt-8 pt-8 border-t border-slate-800 text-center">
             <ArrowRight className="w-6 h-6 text-teal-400 mx-auto mb-3" />
-            <h4 className="text-2xl font-bold text-white mb-2">하이브리드 신용평가</h4>
-            <p className="text-slate-300">두 세계의 장점을 결합하여 더 정확하고 공정한 신용평가를 실현합니다</p>
+            <h4 className="text-2xl font-bold text-white mb-2">네오 신용평가 모델</h4>
+            <p className="text-slate-300">Trust Score가 대출 한도와 금리를 결정하는 혁신적인 신용평가 시스템</p>
           </div>
         </motion.div>
 
@@ -171,8 +174,15 @@ export default function FutureRoadmap() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group bg-slate-950 border border-slate-800 hover:border-teal-500/50 rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/10"
+                  className="group bg-slate-950 border border-slate-800 hover:border-teal-500/50 rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/10 relative"
                 >
+                  {product.badge && (
+                    <div className="absolute -top-3 -right-3">
+                      <span className="px-3 py-1 rounded-full bg-teal-500 text-black text-xs font-bold">
+                        {product.badge}
+                      </span>
+                    </div>
+                  )}
                   <div
                     className={`w-14 h-14 rounded-xl bg-gradient-to-br ${product.color} bg-opacity-10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
                   >
@@ -196,147 +206,110 @@ export default function FutureRoadmap() {
           </div>
         </div>
 
-        <div className="mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 rounded-full px-4 py-2 mb-6">
-              <Building2 className="w-4 h-4 text-purple-400" />
-              <span className="text-sm font-medium text-purple-400">Enterprise Expansion</span>
-            </div>
-            <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">기업 및 기관 Trust Score</h3>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-              개인을 넘어 <span className="text-purple-400 font-semibold">기업, DAO, 프로토콜</span>까지
-              <br />
-              온체인 신뢰도 평가 서비스를 확장합니다
-            </p>
-          </motion.div>
-
-          {/* Enterprise Trust Score Features */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-purple-950/50 to-slate-950 border border-purple-800/30 rounded-2xl p-8 md:p-12 mb-12"
-          >
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h4 className="text-2xl font-bold text-white mb-4">전통적 기업 신용평가</h4>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-slate-400">✕</span>
-                    </div>
-                    <span className="text-slate-400">재무제표 기반 평가 (조작 가능)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-slate-400">✕</span>
-                    </div>
-                    <span className="text-slate-400">불투명한 평가 기준</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-slate-400">✕</span>
-                    </div>
-                    <span className="text-slate-400">느린 평가 프로세스</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-2xl font-bold text-white mb-4">TrustFi 기업 Trust Score</h4>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-white">✓</span>
-                    </div>
-                    <span className="text-slate-300">투명한 온체인 데이터 기반</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-white">✓</span>
-                    </div>
-                    <span className="text-slate-300">실시간 신뢰도 모니터링</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
-                      <span className="text-xs text-white">✓</span>
-                    </div>
-                    <span className="text-slate-300">스마트 컨트랙트 보안 분석</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="pt-8 border-t border-purple-800/30">
-              <h5 className="text-lg font-semibold text-white mb-4">평가 요소</h5>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">40%</div>
-                  <div className="text-sm text-slate-400">온체인 거래 활동</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">30%</div>
-                  <div className="text-sm text-slate-400">스마트 컨트랙트 보안</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">20%</div>
-                  <div className="text-sm text-slate-400">커뮤니티 평판</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400 mb-1">10%</div>
-                  <div className="text-sm text-slate-400">거버넌스 참여</div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Enterprise Use Cases */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {enterpriseUseCases.map((useCase, idx) => {
-              const Icon = useCase.icon
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group bg-slate-950 border border-slate-800 hover:border-purple-500/50 rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10"
-                >
-                  <div
-                    className={`w-12 h-12 rounded-lg bg-gradient-to-br ${useCase.color} bg-opacity-10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h4 className="text-lg font-bold text-white mb-2">{useCase.title}</h4>
-                  <p className="text-sm text-slate-400 leading-relaxed">{useCase.description}</p>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* CTA */}
+        {/* Enterprise Trust Score Features */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-16 text-center"
+          className="bg-gradient-to-br from-purple-950/50 to-slate-950 border border-purple-800/30 rounded-2xl p-8 md:p-12 mb-12"
         >
-          <p className="text-slate-400 mb-4">
-            하이브리드 신용평가 모델 및 기업 Trust Score는 현재 개발 중이며, 2025년 하반기 출시 예정입니다
-          </p>
-          <div className="inline-flex items-center gap-2 text-teal-400 font-medium">
-            <span>업데이트 소식을 받아보세요</span>
-            <ArrowRight className="w-4 h-4" />
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h4 className="text-2xl font-bold text-white mb-4">전통적 기업 신용평가</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-slate-400">✕</span>
+                  </div>
+                  <span className="text-slate-400">재무제표 기반 평가 (조작 가능)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-slate-400">✕</span>
+                  </div>
+                  <span className="text-slate-400">불투명한 평가 기준</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-slate-400">✕</span>
+                  </div>
+                  <span className="text-slate-400">느린 평가 프로세스</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-2xl font-bold text-white mb-4">TrustFi 기업 Trust Score</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-white">✓</span>
+                  </div>
+                  <span className="text-slate-300">투명한 온체인 데이터 기반</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-white">✓</span>
+                  </div>
+                  <span className="text-slate-300">실시간 신뢰도 모니터링</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <span className="text-xs text-white">✓</span>
+                  </div>
+                  <span className="text-slate-300">스마트 컨트랙트 보안 분석</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-purple-800/30">
+            <h5 className="text-lg font-semibold text-white mb-4">평가 요소</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-400 mb-1">40%</div>
+                <div className="text-sm text-slate-400">온체인 거래 활동</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-400 mb-1">30%</div>
+                <div className="text-sm text-slate-400">스마트 컨트랙트 보안</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-400 mb-1">20%</div>
+                <div className="text-sm text-slate-400">커뮤니티 평판</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-400 mb-1">10%</div>
+                <div className="text-sm text-slate-400">거버넌스 참여</div>
+              </div>
+            </div>
           </div>
         </motion.div>
+
+        {/* Enterprise Use Cases */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {enterpriseUseCases.map((useCase, idx) => {
+            const Icon = useCase.icon
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group bg-slate-950 border border-slate-800 hover:border-purple-500/50 rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/10"
+              >
+                <div
+                  className={`w-12 h-12 rounded-lg bg-gradient-to-br ${useCase.color} bg-opacity-10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                >
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h4 className="text-lg font-bold text-white mb-2">{useCase.title}</h4>
+                <p className="text-sm text-slate-400 leading-relaxed">{useCase.description}</p>
+              </motion.div>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
