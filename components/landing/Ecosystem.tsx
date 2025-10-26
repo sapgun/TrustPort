@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Network, Link2, Database, Shield, Zap, Globe } from "lucide-react"
+import { Network, Link2, Database, Shield, Zap, Globe, Lock } from "lucide-react"
 
 export default function Ecosystem() {
   const partners = [
@@ -49,6 +49,33 @@ export default function Ecosystem() {
     },
   ]
 
+  const securityPartners = [
+    {
+      name: "PeckShield",
+      role: "스마트 컨트랙트 보안",
+      icon: Lock,
+      color: "red",
+      description: "스마트 컨트랙트 취약점 분석 및 보안 감사",
+      impact: "컨트랙트 보안 강화",
+    },
+    {
+      name: "GoPlus Security",
+      role: "실시간 보안 API",
+      icon: Shield,
+      color: "orange",
+      description: "토큰/NFT/dApp 실시간 보안 검사 및 피싱 감지",
+      impact: "위험 감지 정확도 95%↑",
+    },
+    {
+      name: "Arkham Intelligence",
+      role: "온체인 인텔리전스",
+      icon: Database,
+      color: "amber",
+      description: "지갑 주소 분석 및 자금 흐름 추적",
+      impact: "의심 주소 자동 식별",
+    },
+  ]
+
   const colorClasses = {
     teal: "from-teal-500/20 to-teal-500/5 border-teal-500/30",
     blue: "from-blue-500/20 to-blue-500/5 border-blue-500/30",
@@ -56,6 +83,9 @@ export default function Ecosystem() {
     purple: "from-purple-500/20 to-purple-500/5 border-purple-500/30",
     cyan: "from-cyan-500/20 to-cyan-500/5 border-cyan-500/30",
     violet: "from-violet-500/20 to-violet-500/5 border-violet-500/30",
+    red: "from-red-500/20 to-red-500/5 border-red-500/30",
+    orange: "from-orange-500/20 to-orange-500/5 border-orange-500/30",
+    amber: "from-amber-500/20 to-amber-500/5 border-amber-500/30",
   }
 
   return (
@@ -122,6 +152,109 @@ export default function Ecosystem() {
             )
           })}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-full mb-6">
+              <Lock className="w-4 h-4 text-red-400" />
+              <span className="text-sm font-medium text-red-400">보안 파트너십</span>
+            </div>
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              업계 최고 수준의
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400">
+                보안 레이어 강화
+              </span>
+            </h3>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+              PeckShield, GoPlus Security, Arkham Intelligence와의 기술 협력으로
+              <br />
+              <span className="text-white font-semibold">사용자 자산을 완벽하게 보호</span>합니다
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {securityPartners.map((partner, idx) => {
+              const Icon = partner.icon
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className={`bg-gradient-to-br ${
+                    colorClasses[partner.color as keyof typeof colorClasses]
+                  } border rounded-2xl p-8 hover:scale-[1.02] transition-transform`}
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-white mb-1">{partner.name}</h4>
+                      <p className="text-sm text-slate-400">{partner.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-300 text-sm leading-relaxed mb-4">{partner.description}</p>
+                  <div className="flex items-center gap-2 text-xs font-medium text-white bg-white/5 px-3 py-2 rounded-lg">
+                    <Zap className="w-3 h-3" />
+                    {partner.impact}
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-10">
+            <h4 className="text-2xl font-bold text-white mb-8 text-center">구체적인 보안 강화 효과</h4>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  metric: "99.9%",
+                  label: "스마트 컨트랙트 보안",
+                  desc: "PeckShield 감사로 취약점 사전 차단",
+                },
+                {
+                  metric: "95%↑",
+                  label: "위험 감지 정확도",
+                  desc: "GoPlus API로 실시간 위협 탐지",
+                },
+                {
+                  metric: "100K+",
+                  label: "위험 주소 DB",
+                  desc: "Arkham으로 의심 주소 자동 식별",
+                },
+                {
+                  metric: "< 1초",
+                  label: "실시간 분석",
+                  desc: "거래 전 즉시 보안 검사 완료",
+                },
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="bg-slate-950 border border-slate-800 rounded-xl p-6 text-center"
+                >
+                  <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-orange-400 mb-2">
+                    {item.metric}
+                  </div>
+                  <div className="text-white font-semibold mb-2">{item.label}</div>
+                  <div className="text-sm text-slate-400">{item.desc}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         {/* Value Proposition */}
         <motion.div
