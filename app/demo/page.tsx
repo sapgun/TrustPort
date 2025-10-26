@@ -5,13 +5,13 @@ import { ArrowLeft } from "lucide-react"
 export default function DemoPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-6">
+      <div className="mb-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">뒤로가기</span>
+          <span className="font-semibold text-base">뒤로가기</span>
         </Link>
       </div>
       {/* </CHANGE> */}
