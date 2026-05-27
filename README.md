@@ -1,70 +1,78 @@
 # TrustFi — Web3 Trust & Security Gateway
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
-![Three.js](https://img.shields.io/badge/Three.js-3D-orange)
+**누구나 안전하게 Web3를 시작하고 사용할 수 있게 만드는 신뢰 기반 게이트웨이**
 
-**Web3를 누구나 안전하게 사용할 수 있게 만드는 신뢰 게이트웨이**
-
-TrustFi는 Web3 초보자가 복잡한 지갑, 승인, 보안 문제를 고민하지 않고 안전하게 Web3를 시작하고 사용할 수 있도록 돕는 **Trust Operating System**입니다.
+TrustFi는 Web3의 복잡한 보안 문제(지갑 관리, 승인 위험, 피싱, KYC 등)를 해결하기 위해 만들어진 **Trust Operating System**입니다.
 
 ## 🚀 Live Demo
-[TrustFi Demo](https://trustfi-xxx.vercel.app) ← 배포 URL 들어가면 업데이트
+[TrustFi → https://trustfi-xxx.vercel.app](링크 업데이트)
 
-## 💡 핵심 문제 해결
-Web3는 아직 너무 어렵고 위험합니다.  
-TrustFi는 **“사용자가 보안 전문가가 되어야 하는 시대”**를 끝내기 위해 만들어졌습니다.
+## 💡 해결하는 문제
+Web3를 사용하려면 사용자가 보안 전문가가 되어야 합니다.  
+TrustFi는 **"사용자가 위험을 감수하지 않아도 되는 Web3"**를 목표로 합니다.
 
-## ✨ 주요 컨셉
-- **10초 온보딩** (PASS / Google / Apple 로그인)
-- **DID 기반 신뢰 계층** (실명 인증 → 최소한의 신뢰 증명)
-- **Signing Firewall** (서명 전 위험 분석 & 자연어 설명)
-- **Trust Score** (온체인 + 오프체인 신뢰도 종합 점수)
+## ✨ 핵심 기능
+- **10초 온보딩** (PASS / Google / Apple 연동)
+- **Signing Firewall** — 서명 전에 위험 분석 및 자연어 설명
+- **Trust Score System** — 온체인 + 오프체인 신뢰도 종합 평가
 - **Multi-chain Security Dashboard**
+- **Trust Vault** — LST / Staking 보상 확대
+- **Trust Point Economy** — 안전한 행동 → USDC / TPT 보상
 
 ## 🛠 Tech Stack
-- **Frontend**: Next.js 15.2.8 (App Router) + TypeScript
+- **Frontend**: Next.js 15.2.8 + TypeScript + App Router
 - **3D Visualization**: Three.js + React Three Fiber + Drei
-- **UI**: shadcn/ui + Tailwind + Radix UI + Framer Motion
+- **UI**: shadcn/ui + Tailwind CSS + Framer Motion
 - **AI**: Vercel AI SDK
 - **Deployment**: Vercel
 
-## 📍 현재 상태 (MVP)
-- 3D 기반 Security Dashboard UI
-- AI Chat 인터페이스
-- Multi-chain 자산 표시 Mockup
-- Trust Score 시각화 Mockup
+## 📍 현재 개발 단계
+**MVP 1단계 (Security Dashboard + Trust Point)**  
+→ 3D 대시보드, Trust Score 시각화, Vault UI, Pool Lineup, Earn 시스템 구현 완료
 
-## 🔮 Roadmap
-**MVP 1** — Security Dashboard + Signing Firewall  
-**MVP 2** — Trust Identity Layer (DID + Trust Score NFT)  
-**MVP 3** — Vault & Web3 NeoBank 확장
+**다음 단계 (MVP 2)**
+- Signing Firewall (트랜잭션 시뮬레이션 + 위험 분석)
+- DID / Trust Score NFT 연동
+- 실제 Web3 지갑 연결 (wagmi + viem)
 
-## ⚠️ Note
-이 프로젝트는 **TrustFi** 비전의 초기 프로토타입입니다.  
-v0.dev로 빠르게 UI를 만든 후, 직접 리팩토링 및 기능 개발 중입니다.
+## 🔮 Vision
+TrustFi는 단순한 지갑이나 대시보드가 아닙니다.  
+**Web3를 위한 신뢰 인프라**이자, **모두를 위한 Web3 Trust OS**를 목표로 합니다.
 
 ---
 
-**TrustFi는 단순한 지갑이나 대시보드가 아닙니다.**  
-**Web3를 안전하게 쓰기 위한 전체적인 신뢰 레이어**를 목표로 합니다.
+### 3. 당장 정리해야 할 것들
+
+1. **불필요한 파일 삭제**
+   - `app/api/news/*` 전체 삭제 (TrustFi와 전혀 관련 없음)
+   - `app/api/test/route.ts` 삭제
+   - 불필요한 mock 데이터 정리
+
+2. **메인 페이지 (`app/page.tsx`)에 TrustFi 브랜딩 강화**
+   - 현재 Hero는 좋지만, "TrustFi" 컨셉을 더 강하게 드러내기
+
+3. **프로젝트 구조 정리**
+   - `components/landing/` 폴더를 `components/`로 적절히 재배치
+   - 불필요한 `expo`, `react-native` 관련 의존성 제거 (현재 필요 없음)
 
 ---
 
-### 3. 다음 단계 추천
+**지금 바로 할 일 순서**
 
-1. **레포 이름 변경** (TrustPort → TrustFi)
-2. 위 README 적용
-3. 불필요한 파일 정리 (`/api/news/*`, `/api/test` 등 삭제)
-4. 메인 페이지에 "TrustFi" 브랜딩 강화 (로고, 슬로건 추가)
+1. 레포 이름 `TrustFi`로 변경
+2. README.md 위 내용으로 교체
+3. `pnpm run build` 해서 빌드 확인
+4. 불필요한 `/api/news` 관련 파일 삭제 후 다시 build & push
 
 ---
 
-**지금 바로 할까요?**
+원하는 부분부터 집중적으로 도와줄게요.
 
-- A. README를 위 버전으로 적용하고 싶다
-- B. 레포 이름을 TrustFi로 바꾸는 방법 알려줘
-- C. 불필요한 API 파일 정리부터 하자
-- D. MVP 1단계(보안 대시보드)에 맞게 UI 개선 방향 잡자
+**지금 어떤 걸 먼저 하고 싶어?**
 
-원하는 걸 말해주세요. 바로 진행 도와드릴게요.
+- A. README.md를 더 세련되게 다듬어달라
+- B. 불필요 파일 정리 방법 상세 가이드
+- C. Signing Firewall 페이지 스케치 + 코드 방향성
+- D. 전체 프로젝트 구조 리팩토링 제안
+
+번호나 원하는 방향 말해줘!
